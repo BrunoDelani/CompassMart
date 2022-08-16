@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-
+import './infra/database/mongo/index';
 class App {
   public express: express.Application;
 
