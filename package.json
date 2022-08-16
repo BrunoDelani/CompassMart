@@ -2,9 +2,10 @@
   "name": "compassmart",
   "version": "1.0.0",
   "description": "Final Challenge - API REST FULL",
-  "main": "index.js",
+  "main": "src/app.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "predev": "eslint . --ext .ts --fix",
+    "dev": "nodemon src/server.ts"
   },
   "repository": {
     "type": "git",
