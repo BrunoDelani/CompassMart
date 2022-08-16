@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import routes from './routes/index';
 import './infra/database/mongo/index';
 class App {
   public express: express.Application;
@@ -16,6 +17,7 @@ class App {
   }
 
   private routes ():void {
+    this.express.use(...routes);
   }
 }
 
