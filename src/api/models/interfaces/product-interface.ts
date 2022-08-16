@@ -9,9 +9,11 @@ export interface IProduct {
     qtd_stock: Number;
     stock_control_enabled: Boolean;
     bar_codes: String;
+    created_at: Date;
+    updated_at: Date;
 }
 
-export interface IProductReponse {
+export interface IProductResponse {
     _id: Types.ObjectId;
     title: String;
     description: String;

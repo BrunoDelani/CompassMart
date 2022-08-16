@@ -17,4 +17,4 @@ const ProductSchema = new Schema<IProduct>({
   }
 });
 
-export default model<IProduct>('employee', ProductSchema);
+export default model<IProduct>('product', ProductSchema);
