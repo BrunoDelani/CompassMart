@@ -3,7 +3,7 @@ class ProductBarcodesExists {
   public readonly statusCode: number;
 
   constructor () {
-    this.message = 'No products found.';
+    this.message = 'Not products found.';
     this.statusCode = 404;
   }
 }
