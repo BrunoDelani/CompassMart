@@ -4,7 +4,7 @@ import { ObjectId } from 'mongoose';
 
 class ProductRepository {
   async findById (id: ObjectId): Promise<IProductResponse | null> {
-    return await ProductSchema.findById({ _id: id });
+    return ProductSchema.findById({ _id: id });
   }
 
   async findByBarCode (barCodes: String): Promise<Boolean> {
@@ -14,6 +14,10 @@ class ProductRepository {
 
   async create (payload: IProduct): Promise<IProductResponse | null> {
     return ProductSchema.create(payload);
+  }
+
+  async deleteByID (id: ObjectId): Promise<void> {
+    await ProductSchema.findByIdAndDelete({ _id: id });
   }
 }
 

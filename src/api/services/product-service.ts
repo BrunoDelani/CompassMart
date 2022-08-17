@@ -16,6 +16,13 @@ class ProductService {
     payload.stock_control_enabled = true;
     return await productRepository.create(payload);
   }
+
+  async deleteProductByID (id: ObjectId): Promise<void> {
+    const result = await productRepository.findById(id);
+    console.log(result);
+    if (result === null) throw new ProductNotFound();
+    await productRepository.deleteByID(id);
+  }
 }
 
 export default new ProductService();
