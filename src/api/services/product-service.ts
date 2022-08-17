@@ -34,8 +34,16 @@ class ProductService {
 
   async createProduct (payload: IProduct): Promise<IProductResponse|null> {
     if (await productRepository.findByBarCode(payload.bar_codes)) throw new ProductBarcodesExists();
-    if (payload.qtd_stock > 0) payload.stock_control_enabled = true;
+    payload.qtd_stock > 0 ? payload.stock_control_enabled = true : payload.stock_control_enabled = false;
     return await productRepository.create(payload);
+  }
+
+  async updateTotalProduct (id: ObjectId, payload: IProduct): Promise<void> {
+    const findProduct = await productRepository.findById(id);
+    if (findProduct === null) throw new ProductNotFound();
+    payload.qtd_stock > 0 ? payload.stock_control_enabled = true : payload.stock_control_enabled = false;
+    const updateProduct = await productRepository.updateTotal(id, payload);
+    if (updateProduct === null) throw new ProductNotFound();
   }
 
   async deleteProductByID (id: ObjectId): Promise<void> {

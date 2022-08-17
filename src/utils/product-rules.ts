@@ -1,6 +1,7 @@
 class ProductRules {
   public readonly minPrice: number;
   public readonly maxPrice: number;
+  public readonly minStock: number;
   public readonly minStockToRegister: number;
   public readonly maxStock: number;
   public readonly barCodesLength: number;
@@ -9,6 +10,7 @@ class ProductRules {
   constructor () {
     this.minPrice = 0.01;
     this.maxPrice = 1000;
+    this.minStock = 0;
     this.minStockToRegister = 1;
     this.maxStock = 100000;
     this.barCodesLength = 13;

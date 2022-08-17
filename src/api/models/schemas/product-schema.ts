@@ -31,7 +31,7 @@ const ProductSchema = new Schema<IProduct>({
         stock_control_enabled: ret.stock_control_enabled,
         bar_codes: ret.bar_codes,
         created_at: ret.created_at,
-        update_at: ret.update_at
+        updated_at: ret.updated_at
       };
     }
   }
