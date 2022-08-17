@@ -5,13 +5,13 @@ import { ObjectId } from 'mongoose';
 class ProductRepository {
   async find (query: IProductQuery): Promise<IProductResponse[] | null> {
     if (query.department && query.brand) {
-      return await ProductSchema.find({ department: { $regex: query.department }, brand: { $regex: query.brand } });
+      return await ProductSchema.find({ department: { $regex: query.department }, brand: { $regex: query.brand }, stock_control_enabled: true });
     } else if (query.department) {
-      return await ProductSchema.find({ department: { $regex: query.department } });
+      return await ProductSchema.find({ department: { $regex: query.department }, stock_control_enabled: true });
     } else if (query.brand) {
-      return await ProductSchema.find({ brand: { $regex: query.brand } });
+      return await ProductSchema.find({ brand: { $regex: query.brand }, stock_control_enabled: true });
     } else {
-      return await ProductSchema.find();
+      return await ProductSchema.find({ stock_control_enabled: true });
     }
   }
 
