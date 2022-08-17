@@ -19,7 +19,6 @@ class ProductService {
 
   async deleteProductByID (id: ObjectId): Promise<void> {
     const result = await productRepository.findById(id);
-    console.log(result);
     if (result === null) throw new ProductNotFound();
     await productRepository.deleteByID(id);
   }
