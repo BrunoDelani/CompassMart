@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import ProductIdInvalid from '../../../errors/product-id-invalid';
+import ProductIdInvalid from '../../../errors/product/product-id-invalid';
 const ObjectId = require('mongoose').Types.ObjectId;
 
 export default async (req: Request, res: Response, next: NextFunction) => {

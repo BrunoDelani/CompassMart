@@ -1,8 +1,24 @@
-import { IProduct, IProductResponse } from '../models/interfaces/product-interface';
+import { IProduct, IProductQuery, IProductResponse } from '../models/interfaces/product-interface';
 import ProductSchema from '../models/schemas/product-schema';
-import { ObjectId } from 'mongoose';
+import { ObjectId, PaginateResult } from 'mongoose';
+import paginateCustomLabels from '../../utils/paginate-custom-labels';
 
 class ProductRepository {
+  async find (query: IProductQuery): Promise<PaginateResult<IProductResponse>> {
+    const options = {
+      page: query.page || 1,
+      limit: query.limit || 50,
+      customLabels: paginateCustomLabels
+    };
+    const resultsPaginate = await ProductSchema.paginate(
+      {
+        department: { $regex: (query.department !== undefined ? query.department : '') },
+        brand: { $regex: (query.brand !== undefined ? query.brand : '') },
+        stock_control_enabled: true
+      }, options);
+    return resultsPaginate;
+  }
+
   async findById (id: ObjectId): Promise<IProductResponse | null> {
     return ProductSchema.findById({ _id: id });
   }
