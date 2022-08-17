@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import ProductNotFound from '../../errors/product-not-found';
 import ProductBarcodesExists from '../../errors/product-barcodes-exists';
 import productService from '../services/product-service';
 const ObjectId = require('mongodb').ObjectId;
@@ -10,6 +11,7 @@ class ProductController {
       const result = await productService.findProductByID(id);
       return res.status(201).json(result);
     } catch (BadRequest) {
+      if (BadRequest instanceof ProductNotFound) return res.status(BadRequest.statusCode).json({ BadRequest });
       return res.status(500).json(BadRequest);
     }
   }
