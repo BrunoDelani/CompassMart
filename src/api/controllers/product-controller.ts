@@ -1,8 +1,19 @@
 import { Request, Response } from 'express';
 import ProductBarcodesExists from '../../errors/product-barcodes-exists';
 import productService from '../services/product-service';
+const ObjectId = require('mongodb').ObjectId;
 
 class ProductController {
+  async findProductByID (req: Request, res: Response) {
+    try {
+      const id = new ObjectId(req.params.id);
+      const result = await productService.findProductByID(id);
+      return res.status(201).json(result);
+    } catch (BadRequest) {
+      return res.status(500).json(BadRequest);
+    }
+  }
+
   async createProduct (req: Request, res: Response) {
     try {
       const result = await productService.createProduct(req.body);
