@@ -18,6 +18,17 @@ class ProductController {
     }
   }
 
+  async findProductLowStock (req: Request, res: Response) {
+    try {
+      const products = await productService.findProductsLowStock(req.query);
+      return res.status(200).json(products);
+    } catch (BadRequest) {
+      if (BadRequest instanceof PageNotFound) return res.status(BadRequest.statusCode).json({ BadRequest });
+      if (BadRequest instanceof ProductsNotFound) return res.status(BadRequest.statusCode).json({ BadRequest });
+      return res.status(500).json(BadRequest);
+    }
+  }
+
   async findProductByID (req: Request, res: Response) {
     try {
       const id = new ObjectId(req.params.id);

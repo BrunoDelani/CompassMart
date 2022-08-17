@@ -7,6 +7,7 @@ const router = Router();
 const urlBaseRoute = '/api/v1/product';
 router
   .get(`${urlBaseRoute}`, productController.findProduct)
+  .get(`${urlBaseRoute}/low_stock`, productController.findProductLowStock)
   .get(`${urlBaseRoute}/:id`, IdProductValidation, productController.findProductByID)
   .post(`${urlBaseRoute}`, createProductValidation, productController.createProduct)
   .delete(`${urlBaseRoute}/:id`, IdProductValidation, productController.deleteProductByID)

@@ -2,6 +2,8 @@ import { IProduct, IProductQuery, IProductResponse } from '../models/interfaces/
 import ProductSchema from '../models/schemas/product-schema';
 import { ObjectId, PaginateResult } from 'mongoose';
 import paginateCustomLabels from '../../utils/paginate-custom-labels';
+import productRules from '../../utils/product-rules';
+import { IPaginate } from '../models/interfaces/paginate-interface';
 
 class ProductRepository {
   async find (query: IProductQuery): Promise<PaginateResult<IProductResponse>> {
@@ -14,6 +16,21 @@ class ProductRepository {
       {
         department: { $regex: (query.department !== undefined ? query.department : '') },
         brand: { $regex: (query.brand !== undefined ? query.brand : '') },
+        stock_control_enabled: true
+      }, options);
+    return resultsPaginate;
+  }
+
+  async findByLowStock (query: IPaginate): Promise<PaginateResult<IProductResponse>> {
+    const options = {
+      page: query.page || 1,
+      limit: query.limit || 50,
+      sort: { qtd_stock: 1 },
+      customLabels: paginateCustomLabels
+    };
+    const resultsPaginate = await ProductSchema.paginate(
+      {
+        qtd_stock: { $lt: productRules.lowStock },
         stock_control_enabled: true
       }, options);
     return resultsPaginate;
