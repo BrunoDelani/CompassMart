@@ -49,6 +49,12 @@ class ProductRepository {
     return ProductSchema.create(payload);
   }
 
+  async updateTotal (id: ObjectId, payload: IProduct): Promise<IProductResponse | null> {
+    const result = await ProductSchema.findByIdAndUpdate({ _id: id }, payload);
+    if (result) return result;
+    return null;
+  }
+
   async deleteByID (id: ObjectId): Promise<void> {
     await ProductSchema.findByIdAndDelete({ _id: id });
   }
