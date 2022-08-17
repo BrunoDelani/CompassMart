@@ -49,7 +49,7 @@ class ProductRepository {
     return ProductSchema.create(payload);
   }
 
-  async updateTotal (id: ObjectId, payload: IProduct): Promise<IProductResponse | null> {
+  async update (id: ObjectId, payload: IProduct): Promise<IProductResponse | null> {
     const result = await ProductSchema.findByIdAndUpdate({ _id: id }, payload);
     if (result) return result;
     return null;

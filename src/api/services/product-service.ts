@@ -32,17 +32,17 @@ class ProductService {
     return result;
   }
 
-  async createProduct (payload: IProduct): Promise<IProductResponse|null> {
+  async createProduct (payload: IProduct): Promise<IProductResponse | null> {
     if (await productRepository.findByBarCode(payload.bar_codes)) throw new ProductBarcodesExists();
-    payload.qtd_stock > 0 ? payload.stock_control_enabled = true : payload.stock_control_enabled = false;
+    payload.qtd_stock <= 0 ? payload.stock_control_enabled = true : payload.stock_control_enabled = false;
     return await productRepository.create(payload);
   }
 
-  async updateTotalProduct (id: ObjectId, payload: IProduct): Promise<void> {
+  async updateProduct (id: ObjectId, payload: IProduct): Promise<void> {
     const findProduct = await productRepository.findById(id);
     if (findProduct === null) throw new ProductNotFound();
-    payload.qtd_stock > 0 ? payload.stock_control_enabled = true : payload.stock_control_enabled = false;
-    const updateProduct = await productRepository.updateTotal(id, payload);
+    payload.qtd_stock === 0 ? payload.stock_control_enabled = false : payload.stock_control_enabled = true;
+    const updateProduct = await productRepository.update(id, payload);
     if (updateProduct === null) throw new ProductNotFound();
   }
 
