@@ -3,8 +3,8 @@ import { Types } from 'mongoose';
 export interface IProductQuery {
     department?: String;
     brand?: String;
-    page?: Number;
-    limit?: Number;
+    page?: number;
+    limit?: number;
 }
 export interface IProduct {
     title: String;

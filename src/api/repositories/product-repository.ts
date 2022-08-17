@@ -1,18 +1,22 @@
 import { IProduct, IProductQuery, IProductResponse } from '../models/interfaces/product-interface';
 import ProductSchema from '../models/schemas/product-schema';
-import { ObjectId } from 'mongoose';
+import { ObjectId, PaginateResult } from 'mongoose';
+import paginateCustomLabels from '../../utils/paginate-custom-labels';
 
 class ProductRepository {
-  async find (query: IProductQuery): Promise<IProductResponse[] | null> {
-    if (query.department && query.brand) {
-      return await ProductSchema.find({ department: { $regex: query.department }, brand: { $regex: query.brand }, stock_control_enabled: true });
-    } else if (query.department) {
-      return await ProductSchema.find({ department: { $regex: query.department }, stock_control_enabled: true });
-    } else if (query.brand) {
-      return await ProductSchema.find({ brand: { $regex: query.brand }, stock_control_enabled: true });
-    } else {
-      return await ProductSchema.find({ stock_control_enabled: true });
-    }
+  async find (query: IProductQuery): Promise<PaginateResult<IProductResponse>> {
+    const options = {
+      page: query.page || 1,
+      limit: query.limit || 50,
+      customLabels: paginateCustomLabels
+    };
+    const resultsPaginate = await ProductSchema.paginate(
+      {
+        department: { $regex: (query.department !== undefined ? query.department : '') },
+        brand: { $regex: (query.brand !== undefined ? query.brand : '') },
+        stock_control_enabled: true
+      }, options);
+    return resultsPaginate;
   }
 
   async findById (id: ObjectId): Promise<IProductResponse | null> {
