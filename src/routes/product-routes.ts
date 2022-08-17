@@ -6,6 +6,7 @@ import IdProductValidation from '../api/validations/product/id-product-validatio
 const router = Router();
 const urlBaseRoute = '/api/v1/product';
 router
+  .get(`${urlBaseRoute}`, productController.findProduct)
   .get(`${urlBaseRoute}/:id`, IdProductValidation, productController.findProductByID)
   .post(`${urlBaseRoute}`, createProductValidation, productController.createProduct)
   .delete(`${urlBaseRoute}/:id`, IdProductValidation, productController.deleteProductByID)

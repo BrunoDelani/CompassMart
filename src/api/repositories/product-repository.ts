@@ -1,8 +1,12 @@
-import { IProduct, IProductResponse } from '../models/interfaces/product-interface';
+import { IProduct, IProductQuery, IProductResponse } from '../models/interfaces/product-interface';
 import ProductSchema from '../models/schemas/product-schema';
 import { ObjectId } from 'mongoose';
 
 class ProductRepository {
+  async find (query: IProductQuery): Promise<IProductResponse[] | null> {
+    return ProductSchema.find();
+  }
+
   async findById (id: ObjectId): Promise<IProductResponse | null> {
     return ProductSchema.findById({ _id: id });
   }

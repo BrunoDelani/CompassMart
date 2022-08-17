@@ -1,5 +1,11 @@
 import { Types } from 'mongoose';
 
+export interface IProductQuery {
+    department?: String;
+    brand?: String;
+    page?: Number;
+    limit?: Number;
+}
 export interface IProduct {
     title: String;
     description: String;
