@@ -10,12 +10,12 @@ export default async (req: Request, res: Response, next: NextFunction) => {
     if (!isValid) throw new ProductIdInvalid();
 
     const ProductValidationSchema = Joi.object({
-      title: Joi.string().trim(),
-      description: Joi.string().trim(),
-      department: Joi.string().trim(),
-      brand: Joi.string().trim(),
-      price: Joi.number().min(ProductRules.minPrice).max(ProductRules.maxPrice),
-      qtd_stock: Joi.number().min(ProductRules.minStock).max(ProductRules.maxStock)
+      title: Joi.string().allow(null).trim(),
+      description: Joi.string().allow(null).trim(),
+      department: Joi.string().allow(null).trim(),
+      brand: Joi.string().allow(null).trim(),
+      price: Joi.number().allow(null).min(ProductRules.minPrice).max(ProductRules.maxPrice),
+      qtd_stock: Joi.number().allow(null).min(ProductRules.minStock).max(ProductRules.maxStock)
     });
     const { error } = await ProductValidationSchema.validate(req.body, { abortEarly: false });
     if (error) {
