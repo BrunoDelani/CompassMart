@@ -12,6 +12,7 @@ router
   .get(`${urlBaseRoute}/low_stock`, productController.findProductLowStock)
   .get(`${urlBaseRoute}/:id`, IdProductValidation, productController.findProductByID)
   .post(`${urlBaseRoute}`, createProductValidation, productController.createProduct)
+  .post(`${urlBaseRoute}/csv`, productController.createProductCSV)
   .put(`${urlBaseRoute}/:id`, putProductValidation, productController.updateProduct)
   .patch(`${urlBaseRoute}/:id`, patchProductValidation, productController.updatePartialProduct)
   .delete(`${urlBaseRoute}/:id`, IdProductValidation, productController.deleteProductByID)
