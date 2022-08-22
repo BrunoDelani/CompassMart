@@ -1,11 +1,11 @@
-class ProductPageNotFound {
+class FileCSVNotFound {
   public readonly message: string;
   public readonly statusCode: number;
 
   constructor () {
-    this.message = 'Page not found.';
+    this.message = 'File .csv not found.';
     this.statusCode = 404;
   }
 }
 
-export default ProductPageNotFound;
+export default FileCSVNotFound;

@@ -4,6 +4,7 @@ import PageNotFound from '../../errors/product/product-page-not-found';
 import ProductNotFound from '../../errors/product/product-not-found';
 import ProductsNotFound from '../../errors/product/products-not-found';
 import productService from '../services/product-service';
+import FileCSVNotFound from '../../errors/product/product-csv-not-found';
 const ObjectId = require('mongodb').ObjectId;
 
 class ProductController {
@@ -46,6 +47,18 @@ class ProductController {
       return res.status(201).json(result);
     } catch (BadRequest) {
       if (BadRequest instanceof ProductBarcodesExists) return res.status(BadRequest.statusCode).json({ BadRequest });
+      return res.status(500).json(BadRequest);
+    }
+  }
+
+  async createProductCSV (req: Request, res: Response) {
+    try {
+      const csv = req.file?.buffer.toString('utf-8');
+      if (csv === undefined) throw new FileCSVNotFound();
+      const result = await productService.createProductsByCSV(csv);
+      return res.status(200).json(result);
+    } catch (BadRequest) {
+      if (BadRequest instanceof FileCSVNotFound) return res.status(BadRequest.statusCode).json({ BadRequest });
       return res.status(500).json(BadRequest);
     }
   }

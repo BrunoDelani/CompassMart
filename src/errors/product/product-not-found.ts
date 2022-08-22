@@ -1,4 +1,4 @@
-class ProductBarcodesExists {
+class ProductNotFound {
   public readonly message: string;
   public readonly statusCode: number;
 
@@ -8,4 +8,4 @@ class ProductBarcodesExists {
   }
 }
 
-export default ProductBarcodesExists;
+export default ProductNotFound;
