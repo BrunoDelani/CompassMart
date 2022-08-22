@@ -4,7 +4,6 @@ import PageNotFound from '../../errors/product/product-page-not-found';
 import ProductNotFound from '../../errors/product/product-not-found';
 import ProductsNotFound from '../../errors/product/products-not-found';
 import productService from '../services/product-service';
-import { Console } from 'console';
 const ObjectId = require('mongodb').ObjectId;
 
 class ProductController {
