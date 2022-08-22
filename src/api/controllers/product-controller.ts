@@ -73,18 +73,6 @@ class ProductController {
     }
   }
 
-  async updatePartialProduct (req: Request, res: Response) {
-    try {
-      const id = new ObjectId(req.params.id);
-      await productService.updatePartialProduct(id, req.body);
-      const productUpdated = await productService.findProductByID(id);
-      return res.status(200).json(productUpdated);
-    } catch (BadRequest) {
-      if (BadRequest instanceof ProductNotFound) return res.status(BadRequest.statusCode).json({ BadRequest });
-      return res.status(500).json(BadRequest);
-    }
-  }
-
   async deleteProductByID (req: Request, res: Response) {
     try {
       const id = new ObjectId(req.params.id);

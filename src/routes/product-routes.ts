@@ -16,7 +16,7 @@ router
   .post(`${urlBaseRoute}`, createProductValidation, productController.createProduct)
   .post(`${urlBaseRoute}/csv`, multerConfig.single('file'), productController.createProductCSV)
   .put(`${urlBaseRoute}/:id`, putProductValidation, productController.updateProduct)
-  .patch(`${urlBaseRoute}/:id`, patchProductValidation, productController.updatePartialProduct)
+  .patch(`${urlBaseRoute}/:id`, patchProductValidation, productController.updateProduct)
   .delete(`${urlBaseRoute}/:id`, IdProductValidation, productController.deleteProductByID)
 ;
 export default router;

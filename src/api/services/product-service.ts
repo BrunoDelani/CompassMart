@@ -34,7 +34,7 @@ class ProductService {
 
   async createProduct (payload: IProduct): Promise<IProductResponse | null> {
     if (await productRepository.findByBarCode(payload.bar_codes)) throw new ProductBarcodesExists();
-    payload.qtd_stock <= 0 ? payload.stock_control_enabled = true : payload.stock_control_enabled = false;
+    payload.qtd_stock <= 0 ? payload.stock_control_enabled = false : payload.stock_control_enabled = true;
     return await productRepository.create(payload);
   }
 
@@ -53,15 +53,6 @@ class ProductService {
     if (findProduct === null) throw new ProductNotFound();
     payload.qtd_stock === 0 ? payload.stock_control_enabled = false : payload.stock_control_enabled = true;
     const updateProduct = await productRepository.update(id, payload);
-    if (updateProduct === null) throw new ProductNotFound();
-  }
-
-  async updatePartialProduct (id: ObjectId, payload: IProductPatch): Promise<void> {
-    const findProduct = await productRepository.findById(id);
-    if (findProduct === null) throw new ProductNotFound();
-    const formatedProduct = this.deleteFieldsNullOrUndefined(payload);
-    formatedProduct.qtd_stock === 0 ? formatedProduct.stock_control_enabled = false : formatedProduct.stock_control_enabled = true;
-    const updateProduct = await productRepository.update(id, formatedProduct);
     if (updateProduct === null) throw new ProductNotFound();
   }
 
@@ -149,7 +140,7 @@ class ProductService {
     return verificador;
   }
 
-  deleteFieldsNullOrUndefined (payload: any): IProductPatch {
+  deleteFieldsNullOrUndefined (payload: any): void {
     for (const key in payload) {
       if (Object.prototype.hasOwnProperty.call(payload, key)) {
         if (payload[key] === undefined || payload[key] === null) {
@@ -157,7 +148,6 @@ class ProductService {
         }
       }
     }
-    return payload;
   };
 }
 
