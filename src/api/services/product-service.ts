@@ -2,7 +2,7 @@ import ProductBarcodesExists from '../../errors/product/product-barcodes-exists'
 import PageNotFound from '../../errors/product/product-page-not-found';
 import ProductNotFound from '../../errors/product/product-not-found';
 import ProductsNotFound from '../../errors/product/products-not-found';
-import { IProduct, IProductPatch, IProductQuery, IProductResponse, IVerifyProduct } from '../models/interfaces/product-interface';
+import { IProduct, IProductPatch, IProductQuery, IProductResponse, IResultInsertProducts, IVerifyProduct } from '../models/interfaces/product-interface';
 import productRepository from '../repositories/product-repository';
 import { ObjectId, PaginateResult } from 'mongoose';
 import { IPaginate } from '../models/interfaces/paginate-interface';
@@ -45,7 +45,13 @@ class ProductService {
         row.replace(/"/gi, '').replace(/\r/gi, '').split(',')
       );
     objectList.shift();
-    objectList.forEach(async element => {
+
+    const listResult: IResultInsertProducts = {
+      success: 0,
+      errors: 0
+    };
+
+    for await (const element of objectList) {
       const newProduct: IProduct = {
         title: element[0],
         description: element[1],
@@ -58,10 +64,27 @@ class ProductService {
         created_at: new Date(),
         updated_at: new Date()
       };
-      console.log(newProduct);
-      console.log(await this.verifyProductToCreate(newProduct));
-      // await productRepository.create(newProduct);
-    });
+      const verify: IVerifyProduct = await this.verifyProductToCreate(newProduct);
+      if (verify.verify === true) {
+        listResult.success = Number(listResult.success) + 1;
+      } else {
+        listResult.errors = Number(listResult.success) + 1;
+        if (listResult.error_details === undefined) {
+          listResult.error_details = [{
+            title: newProduct.title,
+            bar_codes: newProduct.bar_codes,
+            errors: ['erro']
+          }];
+        } else {
+          listResult.error_details?.push({
+            title: newProduct.title,
+            bar_codes: newProduct.bar_codes,
+            errors: ['erro']
+          });
+        }
+      }
+    };
+    console.log(listResult);
   }
 
   async updateProduct (id: ObjectId, payload: IProduct): Promise<void> {
@@ -87,8 +110,8 @@ class ProductService {
     await productRepository.deleteByID(id);
   }
 
-  async verifyProductToCreate (newProduct : IProduct) : Promise<IVerifyProduct> {
-    const verificador : IVerifyProduct = {
+  async verifyProductToCreate (newProduct: IProduct): Promise<IVerifyProduct> {
+    const verificador: IVerifyProduct = {
       verify: true,
       messages: ['']
     };
