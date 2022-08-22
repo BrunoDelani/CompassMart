@@ -1,4 +1,4 @@
-import { IProduct, IProductPatch, IProductQuery, IProductResponse } from '../models/interfaces/product-interface';
+import { IProduct, IProductQuery, IProductResponse } from '../models/interfaces/product-interface';
 import ProductSchema from '../models/schemas/product-schema';
 import { ObjectId, PaginateResult } from 'mongoose';
 import paginateCustomLabels from '../../utils/paginate-custom-labels';
@@ -49,7 +49,7 @@ class ProductRepository {
     return ProductSchema.create(payload);
   }
 
-  async update (id: ObjectId, payload: IProduct | IProductPatch): Promise<IProductResponse | null> {
+  async update (id: ObjectId, payload: IProduct): Promise<IProductResponse | null> {
     const result = await ProductSchema.findByIdAndUpdate({ _id: id }, payload);
     if (result) return result;
     return null;

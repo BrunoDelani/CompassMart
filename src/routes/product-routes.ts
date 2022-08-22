@@ -13,7 +13,7 @@ router
   .get(`${urlBaseRoute}/:id`, IdProductValidation, productController.findProductByID)
   .post(`${urlBaseRoute}`, createProductValidation, productController.createProduct)
   .put(`${urlBaseRoute}/:id`, putProductValidation, productController.updateProduct)
-  .patch(`${urlBaseRoute}/:id`, patchProductValidation, productController.updatePartialProduct)
+  .patch(`${urlBaseRoute}/:id`, patchProductValidation, productController.updateProduct)
   .delete(`${urlBaseRoute}/:id`, IdProductValidation, productController.deleteProductByID)
 ;
 export default router;
