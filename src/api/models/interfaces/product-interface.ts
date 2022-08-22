@@ -18,7 +18,10 @@ export interface IProductPatch {
     created_at?: Date;
     updated_at?: Date;
 }
-
+export interface IVerifyProduct {
+    verify: boolean,
+    messages: [String]
+}
 export interface IProduct {
     title: String;
     description: String;

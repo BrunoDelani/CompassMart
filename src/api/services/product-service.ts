@@ -2,7 +2,7 @@ import ProductBarcodesExists from '../../errors/product/product-barcodes-exists'
 import PageNotFound from '../../errors/product/product-page-not-found';
 import ProductNotFound from '../../errors/product/product-not-found';
 import ProductsNotFound from '../../errors/product/products-not-found';
-import { IProduct, IProductPatch, IProductQuery, IProductResponse } from '../models/interfaces/product-interface';
+import { IProduct, IProductPatch, IProductQuery, IProductResponse, IVerifyProduct } from '../models/interfaces/product-interface';
 import productRepository from '../repositories/product-repository';
 import { ObjectId, PaginateResult } from 'mongoose';
 import { IPaginate } from '../models/interfaces/paginate-interface';
@@ -38,16 +38,29 @@ class ProductService {
     return await productRepository.create(payload);
   }
 
-  createProductsCSV (csv : String) {
+  async createProductsCSV (csv: String) {
     const objectList = csv
       .split('\n')
       .map((row) =>
-        row.replace(/"/gi, '').split(',')
+        row.replace(/"/gi, '').replace(/\r/gi, '').split(',')
       );
-
     objectList.shift();
-    objectList.forEach(element => {
-      console.log(element);
+    objectList.forEach(async element => {
+      const newProduct: IProduct = {
+        title: element[0],
+        description: element[1],
+        department: element[2],
+        brand: element[3],
+        price: Number(element[4]),
+        qtd_stock: Number(element[5]),
+        stock_control_enabled: true,
+        bar_codes: element[6],
+        created_at: new Date(),
+        updated_at: new Date()
+      };
+      console.log(newProduct);
+      console.log(await this.verifyProductToCreate(newProduct));
+      // await productRepository.create(newProduct);
     });
   }
 
@@ -74,7 +87,32 @@ class ProductService {
     await productRepository.deleteByID(id);
   }
 
-  deleteFieldsNullOrUndefined (payload : any): IProductPatch {
+  async verifyProductToCreate (newProduct : IProduct) : Promise<IVerifyProduct> {
+    const verificador : IVerifyProduct = {
+      verify: true,
+      messages: ['']
+    };
+
+    if (newProduct.qtd_stock > 100000 || newProduct.qtd_stock < 1) {
+      verificador.verify = false;
+      verificador.messages.push(`Stock ${newProduct.qtd_stock} is invalid.`);
+    }
+    if (newProduct.price < 0.01 || newProduct.price > 1000) {
+      verificador.verify = false;
+      verificador.messages.push(`Price ${newProduct.price} is invalid.`);
+    }
+    if (newProduct.bar_codes.length !== 13 || !(newProduct.bar_codes.match('[+-]?\\d*(\\.\\d+)?'))) {
+      verificador.verify = false;
+      verificador.messages.push(`bar_codes ${newProduct.bar_codes} is invalid.`);
+    }
+    if (await productRepository.findByBarCode(newProduct.bar_codes)) {
+      verificador.verify = false;
+      verificador.messages.push(`bar_codes ${newProduct.bar_codes} is duplicated`);
+    }
+    return verificador;
+  }
+
+  deleteFieldsNullOrUndefined (payload: any): IProductPatch {
     for (const key in payload) {
       if (Object.prototype.hasOwnProperty.call(payload, key)) {
         if (payload[key] === undefined || payload[key] === null) {
