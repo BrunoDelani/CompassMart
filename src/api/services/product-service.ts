@@ -38,6 +38,19 @@ class ProductService {
     return await productRepository.create(payload);
   }
 
+  createProductsCSV (csv : String) {
+    const objectList = csv
+      .split('\n')
+      .map((row) =>
+        row.replace(/"/gi, '').split(',')
+      );
+
+    objectList.shift();
+    objectList.forEach(element => {
+      console.log(element);
+    });
+  }
+
   async updateProduct (id: ObjectId, payload: IProduct): Promise<void> {
     const findProduct = await productRepository.findById(id);
     if (findProduct === null) throw new ProductNotFound();

@@ -52,7 +52,8 @@ class ProductController {
 
   async createProductCSV (req: Request, res: Response) {
     try {
-      console.log('teste-controller');
+      const csv = req.file?.buffer.toString('utf-8');
+      if (csv !== undefined) productService.createProductsCSV(csv);
       return res.status(200).send();
     } catch (BadRequest) {
       return res.status(500).json(BadRequest);
