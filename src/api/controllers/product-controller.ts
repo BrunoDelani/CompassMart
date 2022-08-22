@@ -54,7 +54,7 @@ class ProductController {
   async createProductCSV (req: Request, res: Response) {
     try {
       const csv = req.file?.buffer.toString('utf-8');
-      if (csv === undefined) throw Error('Error');
+      if (csv === undefined) throw new FileCSVNotFound();
       const result = await productService.createProductsByCSV(csv);
       return res.status(200).json(result);
     } catch (BadRequest) {
