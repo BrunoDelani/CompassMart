@@ -2,7 +2,7 @@ import ProductBarcodesExists from '../../errors/product/product-barcodes-exists'
 import PageNotFound from '../../errors/product/product-page-not-found';
 import ProductNotFound from '../../errors/product/product-not-found';
 import ProductsNotFound from '../../errors/product/products-not-found';
-import { IProduct, IProductPatch, IProductQuery, IProductResponse, IResultInsertProducts, IVerifyProduct } from '../models/interfaces/product-interface';
+import { IProduct, IProductQuery, IProductResponse, IResultInsertProducts, IVerifyProduct } from '../models/interfaces/product-interface';
 import productRepository from '../repositories/product-repository';
 import { ObjectId, PaginateResult } from 'mongoose';
 import { IPaginate } from '../models/interfaces/paginate-interface';
@@ -38,7 +38,7 @@ class ProductService {
     return await productRepository.create(payload);
   }
 
-  async createProductsCSV (csv: String): Promise<IResultInsertProducts> {
+  async createProductsByCSV (csv: String): Promise<IResultInsertProducts> {
     const objectList = csv
       .split('\n')
       .map((row) =>
@@ -71,18 +71,20 @@ class ProductService {
 
     for await (const element of csvFormated) {
       const newProduct: IProduct = {
-        title: element[0],
-        description: element[1],
-        department: element[2],
-        brand: element[3],
-        price: Number(element[4]),
-        qtd_stock: Number(element[5]),
+        title: element[0] || '',
+        description: element[1] || '',
+        department: element[2] || '',
+        brand: element[3] || '',
+        price: Number(element[4]) || 0,
+        qtd_stock: Number(element[5]) || 0,
         stock_control_enabled: true,
-        bar_codes: element[6],
+        bar_codes: element[6] || '',
         created_at: new Date(),
         updated_at: new Date()
       };
+
       const verify: IVerifyProduct = await this.verifyProductToCreate(newProduct);
+
       if (verify.verify === true) {
         insertProducst.push(newProduct);
         listResult.success = Number(listResult.success) + 1;
@@ -109,6 +111,33 @@ class ProductService {
     const verificador: IVerifyProduct = {
       verify: true
     };
+    if (newProduct.title === '') {
+      verificador.verify = false;
+      verificador.messages === undefined
+        ? verificador.messages = ['Title is invalid.']
+        : verificador.messages.push('Title is invalid.');
+    }
+
+    if (newProduct.description === '') {
+      verificador.verify = false;
+      verificador.messages === undefined
+        ? verificador.messages = ['Description is invalid.']
+        : verificador.messages.push('Description is invalid.');
+    }
+
+    if (newProduct.department === '') {
+      verificador.verify = false;
+      verificador.messages === undefined
+        ? verificador.messages = ['Department is invalid.']
+        : verificador.messages.push('Department is invalid.');
+    }
+
+    if (newProduct.brand === '') {
+      verificador.verify = false;
+      verificador.messages === undefined
+        ? verificador.messages = ['Brand is invalid.']
+        : verificador.messages.push('Brand is invalid.');
+    }
 
     if (newProduct.qtd_stock > 100000 || newProduct.qtd_stock < 1) {
       verificador.verify = false;
@@ -139,16 +168,6 @@ class ProductService {
 
     return verificador;
   }
-
-  deleteFieldsNullOrUndefined (payload: any): void {
-    for (const key in payload) {
-      if (Object.prototype.hasOwnProperty.call(payload, key)) {
-        if (payload[key] === undefined || payload[key] === null) {
-          delete payload[key];
-        }
-      }
-    }
-  };
 }
 
 export default new ProductService();

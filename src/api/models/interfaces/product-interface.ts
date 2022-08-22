@@ -31,7 +31,7 @@ export interface IProductQuery {
     page?: number;
     limit?: number;
 }
-export interface IProductPatch {
+export interface IProductInsertMany {
     title?: String;
     description?: String;
     department?: String;
