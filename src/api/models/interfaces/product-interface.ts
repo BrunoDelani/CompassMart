@@ -44,7 +44,7 @@ export interface IProductPatch {
 }
 export interface IVerifyProduct {
     verify: boolean,
-    messages: [String]
+    messages?: [String]
 }
 
 export interface IResultInsertProducts {
@@ -53,6 +53,6 @@ export interface IResultInsertProducts {
     error_details?: [{
         title: String,
         bar_codes: String,
-        errors: [String]
+        errors?: [String]
     }]
 }

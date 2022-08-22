@@ -49,6 +49,10 @@ class ProductRepository {
     return ProductSchema.create(payload);
   }
 
+  async insertMany (payload: IProduct[]): Promise<void> {
+    await ProductSchema.insertMany(payload);
+  }
+
   async update (id: ObjectId, payload: IProduct | IProductPatch): Promise<IProductResponse | null> {
     const result = await ProductSchema.findByIdAndUpdate({ _id: id }, payload);
     if (result) return result;

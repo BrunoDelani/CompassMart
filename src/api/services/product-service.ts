@@ -38,53 +38,14 @@ class ProductService {
     return await productRepository.create(payload);
   }
 
-  async createProductsCSV (csv: String) {
+  async createProductsCSV (csv: String): Promise<IResultInsertProducts> {
     const objectList = csv
       .split('\n')
       .map((row) =>
         row.replace(/"/gi, '').replace(/\r/gi, '').split(',')
       );
     objectList.shift();
-
-    const listResult: IResultInsertProducts = {
-      success: 0,
-      errors: 0
-    };
-
-    for await (const element of objectList) {
-      const newProduct: IProduct = {
-        title: element[0],
-        description: element[1],
-        department: element[2],
-        brand: element[3],
-        price: Number(element[4]),
-        qtd_stock: Number(element[5]),
-        stock_control_enabled: true,
-        bar_codes: element[6],
-        created_at: new Date(),
-        updated_at: new Date()
-      };
-      const verify: IVerifyProduct = await this.verifyProductToCreate(newProduct);
-      if (verify.verify === true) {
-        listResult.success = Number(listResult.success) + 1;
-      } else {
-        listResult.errors = Number(listResult.success) + 1;
-        if (listResult.error_details === undefined) {
-          listResult.error_details = [{
-            title: newProduct.title,
-            bar_codes: newProduct.bar_codes,
-            errors: ['erro']
-          }];
-        } else {
-          listResult.error_details?.push({
-            title: newProduct.title,
-            bar_codes: newProduct.bar_codes,
-            errors: ['erro']
-          });
-        }
-      }
-    };
-    console.log(listResult);
+    return await this.insertListProductsCSV(objectList);
   }
 
   async updateProduct (id: ObjectId, payload: IProduct): Promise<void> {
@@ -110,28 +71,81 @@ class ProductService {
     await productRepository.deleteByID(id);
   }
 
+  async insertListProductsCSV (csvFormated: String[][]): Promise<IResultInsertProducts> {
+    const insertProducst: IProduct[] = [];
+    const listResult: IResultInsertProducts = {
+      success: 0,
+      errors: 0
+    };
+
+    for await (const element of csvFormated) {
+      const newProduct: IProduct = {
+        title: element[0],
+        description: element[1],
+        department: element[2],
+        brand: element[3],
+        price: Number(element[4]),
+        qtd_stock: Number(element[5]),
+        stock_control_enabled: true,
+        bar_codes: element[6],
+        created_at: new Date(),
+        updated_at: new Date()
+      };
+      const verify: IVerifyProduct = await this.verifyProductToCreate(newProduct);
+      if (verify.verify === true) {
+        insertProducst.push(newProduct);
+        listResult.success = Number(listResult.success) + 1;
+      } else {
+        listResult.errors = Number(listResult.errors) + 1;
+        listResult.error_details === undefined
+          ? listResult.error_details = [{
+            title: newProduct.title,
+            bar_codes: newProduct.bar_codes,
+            errors: verify.messages
+          }]
+          : listResult.error_details?.push({
+            title: newProduct.title,
+            bar_codes: newProduct.bar_codes,
+            errors: verify.messages
+          });
+      }
+    };
+    await productRepository.insertMany(insertProducst);
+    return listResult;
+  }
+
   async verifyProductToCreate (newProduct: IProduct): Promise<IVerifyProduct> {
     const verificador: IVerifyProduct = {
-      verify: true,
-      messages: ['']
+      verify: true
     };
 
     if (newProduct.qtd_stock > 100000 || newProduct.qtd_stock < 1) {
       verificador.verify = false;
-      verificador.messages.push(`Stock ${newProduct.qtd_stock} is invalid.`);
+      verificador.messages === undefined
+        ? verificador.messages = [`Stock ${newProduct.qtd_stock} is invalid.`]
+        : verificador.messages.push(`Stock ${newProduct.qtd_stock} is invalid.`);
     }
+
     if (newProduct.price < 0.01 || newProduct.price > 1000) {
       verificador.verify = false;
-      verificador.messages.push(`Price ${newProduct.price} is invalid.`);
+      verificador.messages === undefined
+        ? verificador.messages = [`Price ${newProduct.price} is invalid.`]
+        : verificador.messages.push(`Price ${newProduct.price} is invalid.`);
     }
-    if (newProduct.bar_codes.length !== 13 || !(newProduct.bar_codes.match('[+-]?\\d*(\\.\\d+)?'))) {
+    if (newProduct.bar_codes.length !== 13 || (isNaN(Number(newProduct.bar_codes)))) {
       verificador.verify = false;
-      verificador.messages.push(`bar_codes ${newProduct.bar_codes} is invalid.`);
+      verificador.messages === undefined
+        ? verificador.messages = [`bar_codes ${newProduct.bar_codes} is invalid.`]
+        : verificador.messages.push(`bar_codes ${newProduct.bar_codes} is invalid.`);
     }
+
     if (await productRepository.findByBarCode(newProduct.bar_codes)) {
       verificador.verify = false;
-      verificador.messages.push(`bar_codes ${newProduct.bar_codes} is duplicated`);
+      verificador.messages === undefined
+        ? verificador.messages = [`bar_codes ${newProduct.bar_codes} is duplicated`]
+        : verificador.messages.push(`bar_codes ${newProduct.bar_codes} is duplicated`);
     }
+
     return verificador;
   }
 
