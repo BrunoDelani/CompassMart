@@ -94,12 +94,14 @@ class ProductService {
           ? listResult.error_details = [{
             title: newProduct.title,
             bar_codes: newProduct.bar_codes,
-            errors: verify.messages
+            errors: verify.messages,
+            error: verify.message
           }]
           : listResult.error_details?.push({
             title: newProduct.title,
             bar_codes: newProduct.bar_codes,
-            errors: verify.messages
+            errors: verify.messages,
+            error: verify.message
           });
       }
     };
@@ -165,7 +167,10 @@ class ProductService {
         ? verificador.messages = [`bar_codes ${newProduct.bar_codes} is duplicated`]
         : verificador.messages.push(`bar_codes ${newProduct.bar_codes} is duplicated`);
     }
-
+    if (verificador.messages && verificador.messages.length < 2) {
+      verificador.message = verificador.messages[0];
+      delete verificador.messages;
+    }
     return verificador;
   }
 }
