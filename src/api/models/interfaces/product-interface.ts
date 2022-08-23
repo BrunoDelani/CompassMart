@@ -46,6 +46,7 @@ export interface IProductInsertMany {
 export interface IVerifyProduct {
     verify: boolean,
     messages?: [String]
+    message?: String
 }
 
 export interface IResultInsertProducts {
@@ -55,5 +56,6 @@ export interface IResultInsertProducts {
         title: String,
         bar_codes: String,
         errors?: [String]
+        error?: String
     }]
 }
