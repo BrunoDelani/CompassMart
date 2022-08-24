@@ -48,12 +48,13 @@ class ProductService {
     return await this.insertListProductsCSV(objectList);
   }
 
-  async updateProduct (id: ObjectId, payload: IProduct): Promise<void> {
+  async updateProduct (id: ObjectId, payload: IProduct): Promise<IProduct> {
     const findProduct = await productRepository.findById(id);
     if (findProduct === null) throw new ProductNotFound();
     payload.qtd_stock === 0 ? payload.stock_control_enabled = false : payload.stock_control_enabled = true;
     const updateProduct = await productRepository.update(id, payload);
     if (updateProduct === null) throw new ProductNotFound();
+    return updateProduct;
   }
 
   async deleteProductByID (id: ObjectId): Promise<void> {
