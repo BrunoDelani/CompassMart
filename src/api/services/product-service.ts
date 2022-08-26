@@ -42,7 +42,9 @@ class ProductService {
     const objectList = csv
       .split('\n')
       .map((row) =>
-        row.replace(/"/gi, '').replace(/\r/gi, '').split(',')
+        row.replace(/("[^"]*")/g, (x) => {
+          return x.replace(/,/g, '.');
+        }).replace(/"/gi, '').replace(/\r/gi, '').split(',')
       );
     objectList.shift();
     return await this.insertListProductsCSV(objectList);
@@ -63,7 +65,7 @@ class ProductService {
   }
 
   async insertListProductsCSV (csvFormated: String[][]): Promise<IResultInsertProducts> {
-    const insertProducst: IProduct[] = [];
+    const insertProducts: IProduct[] = [];
     const listResult: IResultInsertProducts = {
       success: 0,
       errors: 0
@@ -86,7 +88,7 @@ class ProductService {
       const verify: IVerifyProduct = await this.verifyProductToCreate(newProduct);
 
       if (verify.verify === true) {
-        insertProducst.push(newProduct);
+        insertProducts.push(newProduct);
         listResult.success = Number(listResult.success) + 1;
       } else {
         listResult.errors = Number(listResult.errors) + 1;
@@ -105,7 +107,7 @@ class ProductService {
           });
       }
     };
-    await productRepository.insertMany(insertProducst);
+    await productRepository.insertMany(insertProducts);
     return listResult;
   }
 
