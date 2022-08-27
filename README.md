@@ -25,3 +25,6 @@ Develop the Back-end for a customer who wants to create a system called CompassM
 # Database
 Cloud MongoDB -> User and database public
 
+# Documentation API
+File in: /docs/documentation-api.yaml
+Or https://app.swaggerhub.com/apis/BrunoDelani/compass-mart/0.0.1
