@@ -7,7 +7,7 @@ const urlBaseRoute = '/api/v1';
 router
   .get(`${urlBaseRoute}/user`, userController.findUser)
   .post(`${urlBaseRoute}/user`, createUserValidation, userController.createUser)
-  .delete(`${urlBaseRoute}/user`, userController.deleteUser)
+  .delete(`${urlBaseRoute}/user/:id`, userController.deleteUser)
 ;
 
 export default router;

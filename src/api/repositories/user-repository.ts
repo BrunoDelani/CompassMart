@@ -15,9 +15,8 @@ class UserRepository {
     return resultsPaginate;
   }
 
-  async findById (id: ObjectId): Promise<boolean> {
-    const result = await userSchema.findOne({ _id: id });
-    return result !== null;
+  async findById (id: ObjectId): Promise<IUser|null> {
+    return userSchema.findOne({ _id: id });
   }
 
   async findByEmail (email: String): Promise<boolean> {
@@ -25,12 +24,12 @@ class UserRepository {
     return result !== null;
   }
 
-  create (payload: IUser): Promise<IUser> {
+  async create (payload: IUser): Promise<IUser> {
     return userSchema.create(payload);
   }
 
-  delete (id: ObjectId): void {
-    userSchema.findByIdAndDelete({ _id: id });
+  async delete (id: ObjectId): Promise<void> {
+    await userSchema.findByIdAndDelete({ _id: id });
   }
 };
 

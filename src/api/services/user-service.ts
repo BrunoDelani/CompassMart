@@ -4,6 +4,7 @@ import { IPaginate } from '../models/interfaces/paginate-interface';
 import { IUser } from '../models/interfaces/user-interface';
 import userRepository from '../repositories/user-repository';
 import UsersNotFound from '../../errors/user/users-not-found';
+import UserNotFound from '../../errors/user/user-not-found';
 import PageNotFound from '../../errors/page-not-found';
 
 class UserService {
@@ -21,8 +22,10 @@ class UserService {
     return await userRepository.create(payload);
   }
 
-  async deleteUser (id: ObjectId) {
-    return console.log('User deleted');
+  async deleteUser (id: ObjectId): Promise<void> {
+    const result = await userRepository.findById(id);
+    if (result === null) throw new UserNotFound();
+    await userRepository.delete(id);
   }
 }
 

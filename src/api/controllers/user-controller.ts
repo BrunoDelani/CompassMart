@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import UserEmailExists from '../../errors/user/user-email-exists';
 import userService from '../services/user-service';
 import UsersNotFound from '../../errors/user/users-not-found';
+import UserNotFound from '../../errors/user/user-not-found';
 import PageNotFound from '../../errors/page-not-found';
 const ObjectId = require('mongodb').ObjectId;
 
@@ -33,6 +34,7 @@ class UserController {
       await userService.deleteUser(id);
       res.status(204).json();
     } catch (BadRequest) {
+      if (BadRequest instanceof UserNotFound) return res.status(BadRequest.statusCode).json({ BadRequest });
       return res.status(500).json(BadRequest);
     }
   }
