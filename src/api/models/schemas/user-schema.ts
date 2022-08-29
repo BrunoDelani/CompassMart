@@ -5,7 +5,9 @@ import paginate from 'mongoose-paginate-v2';
 const UserSchema = new Schema<IUser>({
   email: { type: String, unique: true, required: true },
   password: { type: String, required: true }
+}, {
+  versionKey: false
 });
 
 UserSchema.plugin(paginate);
-export default model<IUser, PaginateModel<IUser>>('product', UserSchema);
+export default model<IUser, PaginateModel<IUser>>('user', UserSchema);
