@@ -25,6 +25,14 @@ class UserController {
       return res.status(500).json(BadRequest);
     }
   }
+
+  async deleteUser (req: Request, res: Response) {
+    try {
+      res.status(204).json();
+    } catch (BadRequest) {
+      return res.status(500).json(BadRequest);
+    }
+  }
 }
 
 export default new UserController();
