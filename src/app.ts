@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import routes from './routes/index';
 import './infra/database/mongo/index';
+import 'dotenv/config';
 class App {
   public express: express.Application;
 
