@@ -38,6 +38,16 @@ class UserController {
       return res.status(500).json(BadRequest);
     }
   }
+
+  async authenticateUser (req: Request, res: Response) {
+    try {
+      console.log('Controller authenticate user');
+      res.status(200).json();
+    } catch (BadRequest) {
+      if (BadRequest instanceof UserNotFound) return res.status(BadRequest.statusCode).json({ BadRequest });
+      return res.status(500).json(BadRequest);
+    }
+  }
 }
 
 export default new UserController();
