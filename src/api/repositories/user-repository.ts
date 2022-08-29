@@ -1,4 +1,4 @@
-import { PaginateResult } from 'mongoose';
+import { PaginateResult, ObjectId } from 'mongoose';
 import PaginateCustomLabels from '../../utils/paginate-custom-labels';
 import { IPaginate } from '../models/interfaces/paginate-interface';
 import { IUser } from '../models/interfaces/user-interface';
@@ -15,6 +15,11 @@ class UserRepository {
     return resultsPaginate;
   }
 
+  async findById (id: ObjectId): Promise<boolean> {
+    const result = await userSchema.findOne({ _id: id });
+    return result !== null;
+  }
+
   async findByEmail (email: String): Promise<boolean> {
     const result = await userSchema.findOne({ email });
     return result !== null;
@@ -22,6 +27,10 @@ class UserRepository {
 
   create (payload: IUser): Promise<IUser> {
     return userSchema.create(payload);
+  }
+
+  delete (id: ObjectId): void {
+    userSchema.findByIdAndDelete({ _id: id });
   }
 };
 
