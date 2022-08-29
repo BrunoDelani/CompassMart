@@ -1,4 +1,4 @@
-import { PaginateResult } from 'mongoose';
+import { ObjectId, PaginateResult } from 'mongoose';
 import UserEmailExists from '../../errors/user/user-email-exists';
 import { IPaginate } from '../models/interfaces/paginate-interface';
 import { IUser } from '../models/interfaces/user-interface';
@@ -16,9 +16,13 @@ class UserService {
     return results;
   }
 
-  async create (payload: IUser): Promise<IUser> {
+  async createUser (payload: IUser): Promise<IUser> {
     if (await userRepository.findByEmail(payload.email)) throw new UserEmailExists();
     return await userRepository.create(payload);
+  }
+
+  async deleteUser (id: ObjectId) {
+    return console.log('User deleted');
   }
 }
 

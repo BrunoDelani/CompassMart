@@ -3,6 +3,7 @@ import UserEmailExists from '../../errors/user/user-email-exists';
 import userService from '../services/user-service';
 import UsersNotFound from '../../errors/user/users-not-found';
 import PageNotFound from '../../errors/page-not-found';
+const ObjectId = require('mongodb').ObjectId;
 
 class UserController {
   async findUser (req: Request, res: Response) {
@@ -18,7 +19,7 @@ class UserController {
 
   async createUser (req: Request, res: Response) {
     try {
-      const result = await userService.create(req.body);
+      const result = await userService.createUser(req.body);
       res.status(201).json(result);
     } catch (BadRequest) {
       if (BadRequest instanceof UserEmailExists) return res.status(BadRequest.statusCode).json({ BadRequest });
@@ -28,6 +29,8 @@ class UserController {
 
   async deleteUser (req: Request, res: Response) {
     try {
+      const id = new ObjectId(req.params.id);
+      await userService.deleteUser(id);
       res.status(204).json();
     } catch (BadRequest) {
       return res.status(500).json(BadRequest);
