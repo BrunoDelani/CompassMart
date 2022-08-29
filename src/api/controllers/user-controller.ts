@@ -5,8 +5,8 @@ import userService from '../services/user-service';
 class UserController {
   async findUser (req: Request, res: Response) {
     try {
-      const result = await userService.findUser(req.query);
-      res.status(200).json(result);
+      const users = await userService.findUser(req.query);
+      res.status(200).json(users);
     } catch (BadRequest) {
       return res.status(500).json(BadRequest);
     }
