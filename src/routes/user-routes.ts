@@ -6,6 +6,9 @@ const router = Router();
 const urlBaseRoute = '/api/v1';
 router
   .get(`${urlBaseRoute}/user`, userController.findUser)
-  .post(`${urlBaseRoute}/user`, createUserValidation, userController.createUser);
+  .post(`${urlBaseRoute}/user`, createUserValidation, userController.createUser)
+  .delete(`${urlBaseRoute}/user`, () => {
+    console.log('Delete route');
+  });
 
 export default router;
