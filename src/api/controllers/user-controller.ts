@@ -3,6 +3,14 @@ import UserEmailExists from '../../errors/user/user-email-exists';
 import userService from '../services/user-service';
 
 class UserController {
+  async findUser (req: Request, res: Response) {
+    try {
+      res.status(200).send();
+    } catch (BadRequest) {
+      return res.status(500).json(BadRequest);
+    }
+  }
+
   async createUser (req: Request, res: Response) {
     try {
       const result = await userService.create(req.body);
