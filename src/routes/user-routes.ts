@@ -8,6 +8,9 @@ const urlBaseRoute = '/api/v1';
 router
   .get(`${urlBaseRoute}/user`, userController.findUser)
   .post(`${urlBaseRoute}/user`, createUserValidation, userController.createUser)
+  .post(`${urlBaseRoute}/authenticate`, () => {
+    console.log('Route authenticate ok');
+  })
   .delete(`${urlBaseRoute}/user/:id`, idUserValidation, userController.deleteUser)
 ;
 
