@@ -6,7 +6,15 @@ const UserSchema = new Schema<IUser>({
   email: { type: String, unique: true, required: true },
   password: { type: String, required: true }
 }, {
-  versionKey: false
+  versionKey: false,
+  toJSON: {
+    transform: function (doc, ret) {
+      return {
+        id: ret._id,
+        email: ret.email
+      };
+    }
+  }
 });
 
 UserSchema.plugin(paginate);
