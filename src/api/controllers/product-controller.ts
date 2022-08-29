@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import ProductBarcodesExists from '../../errors/product/product-barcodes-exists';
-import PageNotFound from '../../errors/product/product-page-not-found';
+import PageNotFound from '../../errors/page-not-found';
 import ProductNotFound from '../../errors/product/product-not-found';
 import ProductsNotFound from '../../errors/product/products-not-found';
 import productService from '../services/product-service';
