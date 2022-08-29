@@ -1,9 +1,11 @@
 import { Request, Response } from 'express';
+import userService from '../services/user-service';
 
 class UserController {
   async createUser (req: Request, res: Response) {
     try {
-      res.status(201).json();
+      const result = await userService.create(req.body);
+      res.status(201).json(result);
     } catch (BadRequest) {
       return res.status(500).json(BadRequest);
     }
