@@ -1,11 +1,12 @@
 import { ObjectId, PaginateResult } from 'mongoose';
 import { IPaginate } from '../models/interfaces/paginate-interface';
-import { IUser } from '../models/interfaces/user-interface';
+import { IUser, IUserAuthenticate } from '../models/interfaces/user-interface';
 import userRepository from '../repositories/user-repository';
 import UsersNotFound from '../../errors/user/users-not-found';
 import UserNotFound from '../../errors/user/user-not-found';
 import PageNotFound from '../../errors/page-not-found';
 import UserIncorrectPassword from '../../errors/user/user-incorrect-password';
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
 class UserService {
@@ -31,11 +32,15 @@ class UserService {
     await userRepository.delete(id);
   }
 
-  async authenticateUser (payload: IUser): Promise<IUser> {
+  async authenticateUser (payload: IUser): Promise<IUserAuthenticate> {
     const result = await userRepository.findByEmail(payload.email);
     if (result === null) throw new UserNotFound();
     if (!await bcrypt.compare(payload.password, result.password)) throw new UserIncorrectPassword();
-    return result;
+    const token = await jwt.sign({ id: result.email }, process.env.JWT_SECRET, {
+      expiresIn: process.env.JWT_EXPIRE_TOKEN
+    });
+    const user: IUserAuthenticate = { email: result.email, token };
+    return user;
   }
 }
 

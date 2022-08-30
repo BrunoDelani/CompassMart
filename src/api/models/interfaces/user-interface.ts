@@ -5,6 +5,5 @@ export interface IUser {
 
 export interface IUserAuthenticate {
     email: String,
-    password: String,
     token: String
 }
