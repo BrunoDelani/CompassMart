@@ -84,6 +84,15 @@ class ProductController {
       return res.status(500).json(BadRequest);
     }
   }
+
+  async mapperProductByID (req: Request, res: Response) {
+    try {
+      return res.status(200).send({ Teste: 'OK' });
+    } catch (BadRequest) {
+      if (BadRequest instanceof ProductNotFound) return res.status(BadRequest.statusCode).json({ BadRequest });
+      return res.status(500).json(BadRequest);
+    }
+  }
 }
 
 export default new ProductController();
