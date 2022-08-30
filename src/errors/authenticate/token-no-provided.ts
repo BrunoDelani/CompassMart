@@ -3,7 +3,7 @@ class NoToken {
   public readonly statusCode: number;
 
   constructor () {
-    this.message = 'No token provied.';
+    this.message = 'No token provided.';
     this.statusCode = 401;
   }
 }

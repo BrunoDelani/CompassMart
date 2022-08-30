@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import NoToken from '../errors/authenticate/token-no-provied';
+import NoToken from '../errors/authenticate/token-no-provided';
 import tokenInvalid from '../errors/authenticate/token-invalid';
 import tokenMalformatted from '../errors/authenticate/token-malformatted';
 const jwt = require('jsonwebtoken');
