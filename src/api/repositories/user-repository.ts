@@ -19,9 +19,8 @@ class UserRepository {
     return userSchema.findOne({ _id: id });
   }
 
-  async findByEmail (email: String): Promise<boolean> {
-    const result = await userSchema.findOne({ email });
-    return result !== null;
+  async findByEmail (email: String): Promise<IUser|null> {
+    return userSchema.findOne({ email });
   }
 
   async create (payload: IUser): Promise<IUser> {

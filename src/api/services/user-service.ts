@@ -1,11 +1,11 @@
 import { ObjectId, PaginateResult } from 'mongoose';
 import { IPaginate } from '../models/interfaces/paginate-interface';
 import { IUser } from '../models/interfaces/user-interface';
-import UserEmailExists from '../../errors/user/user-email-exists';
 import userRepository from '../repositories/user-repository';
 import UsersNotFound from '../../errors/user/users-not-found';
 import UserNotFound from '../../errors/user/user-not-found';
 import PageNotFound from '../../errors/page-not-found';
+import UserIncorrectPassword from '../../errors/user/user-incorrect-password';
 const bcrypt = require('bcrypt');
 
 class UserService {
@@ -19,7 +19,8 @@ class UserService {
   }
 
   async createUser (payload: IUser): Promise<IUser> {
-    if (await userRepository.findByEmail(payload.email)) throw new UserEmailExists();
+    const result = await userRepository.findByEmail(payload.email);
+    if (result === null) throw new UserNotFound();
     payload.password = await bcrypt.hash(payload.password, Number(process.env.SALT_ROUND));
     return await userRepository.create(payload);
   }
@@ -30,8 +31,11 @@ class UserService {
     await userRepository.delete(id);
   }
 
-  async authenticateUser (payload: IUser): Promise<void> {
-    console.log('User authenticate service');
+  async authenticateUser (payload: IUser): Promise<IUser> {
+    const result = await userRepository.findByEmail(payload.email);
+    if (result === null) throw new UserNotFound();
+    if (!await bcrypt.compare(payload.password, result.password)) throw new UserIncorrectPassword();
+    return result;
   }
 }
 
