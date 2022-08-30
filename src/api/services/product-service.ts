@@ -116,59 +116,75 @@ class ProductService {
     const verificador: IVerifyProduct = {
       verify: true
     };
-    if (newProduct.title === '') {
+    if (['undefined', 'null', ''].includes(newProduct.title.toString())) {
       verificador.verify = false;
       verificador.messages === undefined
-        ? verificador.messages = ['Title is invalid.']
-        : verificador.messages.push('Title is invalid.');
+        ? verificador.messages = ['Title is null.']
+        : verificador.messages.push('Title is null.');
     }
 
-    if (newProduct.description === '') {
+    if (['undefined', 'null', ''].includes(newProduct.description.toString())) {
       verificador.verify = false;
       verificador.messages === undefined
-        ? verificador.messages = ['Description is invalid.']
-        : verificador.messages.push('Description is invalid.');
+        ? verificador.messages = ['Description is null.']
+        : verificador.messages.push('Description is null.');
     }
 
-    if (newProduct.department === '') {
+    if (['undefined', 'null', ''].includes(newProduct.department.toString())) {
       verificador.verify = false;
       verificador.messages === undefined
-        ? verificador.messages = ['Department is invalid.']
-        : verificador.messages.push('Department is invalid.');
+        ? verificador.messages = ['Department is null.']
+        : verificador.messages.push('Department is null.');
     }
 
-    if (newProduct.brand === '') {
+    if (['undefined', 'null', ''].includes(newProduct.brand.toString())) {
       verificador.verify = false;
       verificador.messages === undefined
-        ? verificador.messages = ['Brand is invalid.']
-        : verificador.messages.push('Brand is invalid.');
+        ? verificador.messages = ['Brand is null.']
+        : verificador.messages.push('Brand is null.');
     }
 
-    if (newProduct.qtd_stock > 100000 || newProduct.qtd_stock < 1) {
+    if (['undefined', 'null', ''].includes(newProduct.qtd_stock.toString())) {
       verificador.verify = false;
       verificador.messages === undefined
-        ? verificador.messages = [`Stock ${newProduct.qtd_stock} is invalid.`]
-        : verificador.messages.push(`Stock ${newProduct.qtd_stock} is invalid.`);
+        ? verificador.messages = ['Stock is null.']
+        : verificador.messages.push('Stock is null.');
+    } else if (newProduct.qtd_stock > 100000 || newProduct.qtd_stock < 1) {
+      verificador.verify = false;
+      verificador.messages === undefined
+        ? verificador.messages = [`Stock is ${newProduct.qtd_stock}.`]
+        : verificador.messages.push(`Stock is ${newProduct.qtd_stock}.`);
     }
 
-    if (newProduct.price < 0.01 || newProduct.price > 1000) {
+    if (['undefined', 'null', ''].includes(newProduct.price.toString())) {
       verificador.verify = false;
       verificador.messages === undefined
-        ? verificador.messages = [`Price ${newProduct.price} is invalid.`]
-        : verificador.messages.push(`Price ${newProduct.price} is invalid.`);
+        ? verificador.messages = ['Price is null.']
+        : verificador.messages.push('Price is null.');
+    } else if (newProduct.price < 0.01 || newProduct.price > 1000) {
+      verificador.verify = false;
+      verificador.messages === undefined
+        ? verificador.messages = [`Price is ${newProduct.price}.`]
+        : verificador.messages.push(`Price is ${newProduct.price}.`);
     }
-    if (newProduct.bar_codes.length !== 13 || (isNaN(Number(newProduct.bar_codes)))) {
+
+    if (newProduct.bar_codes.length !== 13) {
       verificador.verify = false;
       verificador.messages === undefined
-        ? verificador.messages = [`bar_codes ${newProduct.bar_codes} is invalid.`]
-        : verificador.messages.push(`bar_codes ${newProduct.bar_codes} is invalid.`);
+        ? verificador.messages = ['bar_codes hasn\'t 13 digit.']
+        : verificador.messages.push('bar_codes hasn\'t 13 digit.');
+    } else if ((isNaN(Number(newProduct.bar_codes)))) {
+      verificador.verify = false;
+      verificador.messages === undefined
+        ? verificador.messages = ['bar_codes is not a number.']
+        : verificador.messages.push('bar_codes is not a number.');
     }
 
     if (await productRepository.findByBarCode(newProduct.bar_codes)) {
       verificador.verify = false;
       verificador.messages === undefined
-        ? verificador.messages = [`bar_codes ${newProduct.bar_codes} is duplicated`]
-        : verificador.messages.push(`bar_codes ${newProduct.bar_codes} is duplicated`);
+        ? verificador.messages = ['bar_codes duplicate']
+        : verificador.messages.push('bar_codes duplicate');
     }
     if (verificador.messages && verificador.messages.length < 2) {
       verificador.message = verificador.messages[0];
