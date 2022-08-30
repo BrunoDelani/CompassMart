@@ -41,8 +41,8 @@ class UserController {
 
   async authenticateUser (req: Request, res: Response) {
     try {
-      console.log('Controller authenticate user');
-      res.status(200).json();
+      const result = await userService.authenticateUser(req.body);
+      res.status(200).json(result);
     } catch (BadRequest) {
       if (BadRequest instanceof UserNotFound) return res.status(BadRequest.statusCode).json({ BadRequest });
       return res.status(500).json(BadRequest);

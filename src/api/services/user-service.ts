@@ -29,6 +29,10 @@ class UserService {
     if (result === null) throw new UserNotFound();
     await userRepository.delete(id);
   }
+
+  async authenticateUser (payload: IUser): Promise<void> {
+    console.log('User authenticate service');
+  }
 }
 
 export default new UserService();
