@@ -6,6 +6,7 @@ import UsersNotFound from '../../errors/user/users-not-found';
 import UserNotFound from '../../errors/user/user-not-found';
 import PageNotFound from '../../errors/page-not-found';
 import UserIncorrectPassword from '../../errors/user/user-incorrect-password';
+import UserEmailExists from '../../errors/user/user-email-exists';
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
@@ -19,11 +20,17 @@ class UserService {
     return results;
   }
 
-  async createUser (payload: IUser): Promise<IUser> {
+  async createUser (payload: IUser): Promise<IUserAuthenticate> {
     const result = await userRepository.findByEmail(payload.email);
-    if (result === null) throw new UserNotFound();
+    if (result !== null) throw new UserEmailExists();
     payload.password = await bcrypt.hash(payload.password, Number(process.env.SALT_ROUND));
-    return await userRepository.create(payload);
+    const userCreate = await userRepository.create(payload);
+    const user: IUserAuthenticate = {
+      id: userCreate.id,
+      email: userCreate.email,
+      token: await this.generateToken(userCreate.email)
+    };
+    return user;
   }
 
   async deleteUser (id: ObjectId): Promise<void> {
@@ -36,11 +43,14 @@ class UserService {
     const result = await userRepository.findByEmail(payload.email);
     if (result === null) throw new UserNotFound();
     if (!await bcrypt.compare(payload.password, result.password)) throw new UserIncorrectPassword();
-    const token = await jwt.sign({ id: result.email }, process.env.JWT_SECRET, {
+    const user: IUserAuthenticate = { email: result.email, token: await this.generateToken(result.email) };
+    return user;
+  }
+
+  async generateToken (email: String): Promise<String> {
+    return jwt.sign({ id: email }, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_EXPIRE_TOKEN
     });
-    const user: IUserAuthenticate = { email: result.email, token };
-    return user;
   }
 }
 

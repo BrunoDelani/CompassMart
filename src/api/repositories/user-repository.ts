@@ -1,7 +1,7 @@
 import { PaginateResult, ObjectId } from 'mongoose';
 import PaginateCustomLabels from '../../utils/paginate-custom-labels';
 import { IPaginate } from '../models/interfaces/paginate-interface';
-import { IUser } from '../models/interfaces/user-interface';
+import { IUser, IUserAuthenticate } from '../models/interfaces/user-interface';
 import userSchema from '../models/schemas/user-schema';
 
 class UserRepository {
@@ -23,7 +23,7 @@ class UserRepository {
     return userSchema.findOne({ email });
   }
 
-  async create (payload: IUser): Promise<IUser> {
+  async create (payload: IUser): Promise<IUser|IUserAuthenticate> {
     return userSchema.create(payload);
   }
 
