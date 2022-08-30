@@ -65,6 +65,12 @@ class ProductService {
     await productRepository.deleteByID(id);
   }
 
+  async mapperProduct (id: ObjectId): Promise<IProductResponse> {
+    const result = await productRepository.findById(id);
+    if (result === null) throw new ProductNotFound();
+    return result;
+  }
+
   async insertListProductsCSV (csvFormated: String[][]): Promise<IResultInsertProducts> {
     const insertProducts: IProduct[] = [];
     const listResult: IResultInsertProducts = {
