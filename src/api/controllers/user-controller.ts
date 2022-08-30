@@ -4,6 +4,7 @@ import userService from '../services/user-service';
 import UsersNotFound from '../../errors/user/users-not-found';
 import UserNotFound from '../../errors/user/user-not-found';
 import PageNotFound from '../../errors/page-not-found';
+import UserIncorrectPassword from '../../errors/user/user-incorrect-password';
 const ObjectId = require('mongodb').ObjectId;
 
 class UserController {
@@ -34,6 +35,17 @@ class UserController {
       await userService.deleteUser(id);
       res.status(204).json();
     } catch (BadRequest) {
+      if (BadRequest instanceof UserNotFound) return res.status(BadRequest.statusCode).json({ BadRequest });
+      return res.status(500).json(BadRequest);
+    }
+  }
+
+  async authenticateUser (req: Request, res: Response) {
+    try {
+      const result = await userService.authenticateUser(req.body);
+      res.status(200).json(result);
+    } catch (BadRequest) {
+      if (BadRequest instanceof UserIncorrectPassword) return res.status(BadRequest.statusCode).json({ BadRequest });
       if (BadRequest instanceof UserNotFound) return res.status(BadRequest.statusCode).json({ BadRequest });
       return res.status(500).json(BadRequest);
     }
