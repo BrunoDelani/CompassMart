@@ -65,10 +65,90 @@ class ProductService {
     await productRepository.deleteByID(id);
   }
 
-  async mapperProduct (id: ObjectId): Promise<IProductResponse> {
-    const result = await productRepository.findById(id);
+  async mapperProduct (id: ObjectId): Promise<any> {
+    const result: any = await productRepository.findById(id);
     if (result === null) throw new ProductNotFound();
-    return result;
+    const mapper = require('../mapper/mapper.json').fields;
+    let newProductFromatter: any = {};
+    let valueField: any = {};
+    const insertValues = (mMap: string[], pMap: string[], type: string, optional: Array<string | number>, newProductFromatter: any) => {
+      // eslint-disable-next-line no-unreachable-loop
+      for (let index = 0; index <= (mMap.length - 1); index++) {
+        for (const key in newProductFromatter) {
+          if (typeof newProductFromatter[key] === 'object') {
+            if (mMap[index] === key) {
+              mMap.shift();
+              newProductFromatter[key] = {
+                ...newProductFromatter[key],
+                ...insertValues(mMap, pMap, type, optional, newProductFromatter[key])
+              };
+              return newProductFromatter;
+            }
+          } else if (mMap[index] === key) {
+            mMap.shift();
+            newProductFromatter[key] = { ...newProductFromatter[key], ...insertValues(mMap, pMap, type, optional, newProductFromatter) };
+            return newProductFromatter;
+          };
+        }
+        if (mMap[index] !== mMap[mMap.length - 1]) {
+          const field = mMap[index];
+          mMap.shift();
+          valueField = { [field]: insertValues(mMap, pMap, type, optional, newProductFromatter) };
+          return valueField;
+        } else {
+          valueField = { [mMap[index]]: this.formatterValue(result[pMap.toString()], type, optional) };
+          return valueField;
+        }
+      };
+    };
+    for (const key in mapper) {
+      const mMap: string[] = mapper[key].fieldMarket.split('.');
+      const pMap: string[] = mapper[key].fieldProduct.split('.');
+      const type: string = mapper[key].type;
+      const optional: Array<string | number> = mapper[key].optional;
+      pMap.shift();
+      valueField = {};
+      newProductFromatter = { ...newProductFromatter, ...insertValues(mMap, pMap, type, optional, newProductFromatter) };
+    };
+    return newProductFromatter;
+  }
+
+  formatterValue (value: any, type: string, optional: Array<any>): any {
+    if (optional !== undefined) {
+      if (optional[0] === 'currency') {
+        const newValue = new Intl.NumberFormat(
+          optional[1], {
+            style: 'currency',
+            currency: optional[2]
+          }).format(value);
+        return newValue;
+      }
+      if (optional[0] === 'break') {
+        const newValue: Array<String> = [];
+        for (let index = 0; index < value.length; index += 2) {
+          index + 1 < value.length
+            ? newValue.push(value[index] + value[index + 1])
+            : newValue.push(value[index]);
+        }
+        return newValue;
+      };
+    } else {
+      switch (type) {
+      case 'text':
+        return value.toString();
+      case 'array':
+        return [value];
+      case 'boolean':
+        if (value === true || value === 1) {
+          return true;
+        } else {
+          return false;
+        }
+      case 'number':
+        return Number(value);
+      }
+    }
+    return undefined;
   }
 
   async insertListProductsCSV (csvFormated: String[][]): Promise<IResultInsertProducts> {
