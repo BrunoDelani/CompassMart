@@ -11,6 +11,7 @@ const multerConfig = multer();
 const router = Router();
 const urlBaseRoute = '/api/v1/product';
 router
+  .get(`${urlBaseRoute}/marketplace/:id`, IdProductValidation, productController.mapperProductByID)
   .get(`${urlBaseRoute}`, authMiddleware, productController.findProduct)
   .get(`${urlBaseRoute}/low_stock`, authMiddleware, productController.findProductLowStock)
   .get(`${urlBaseRoute}/:id`, authMiddleware, IdProductValidation, productController.findProductByID)
