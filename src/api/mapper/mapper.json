@@ -26,7 +26,7 @@
             "fieldMarket": "walmart.product.codes",
             "optional": [
                 "break",
-                2
+                3
             ],
             "type": "array"
         }
