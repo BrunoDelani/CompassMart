@@ -122,13 +122,19 @@ class ProductService {
             currency: optional[2]
           }).format(value);
         return newValue;
-      }
-      if (optional[0] === 'break') {
+      } else if (optional[0] === 'break') {
         const newValue: Array<String> = [];
-        for (let index = 0; index < value.length; index += 2) {
-          index + 1 < value.length
-            ? newValue.push(value[index] + value[index + 1])
-            : newValue.push(value[index]);
+        let breakValue: string = '';
+        while (value.length > 0) {
+          for (let i = 0; i < optional[1]; i++) {
+            if (value[i]) breakValue += value[i];
+          }
+          for (let i = 0; i < optional[1]; i++) {
+            value = value.slice(1);
+          }
+          console.log('valor do break', breakValue);
+          newValue.push(breakValue);
+          breakValue = '';
         }
         return newValue;
       };
