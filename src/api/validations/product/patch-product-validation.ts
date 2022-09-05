@@ -19,7 +19,15 @@ export default async (req: Request, res: Response, next: NextFunction) => {
     });
     const { error } = await ProductValidationSchema.validate(req.body, { abortEarly: false });
     if (error) {
-      throw error.details;
+      return res.status(400).json({
+        message: 'Bad Request',
+        details: error.details.map((detail) => ({
+          name: detail.path.join('.'),
+          description: detail.message
+        })
+        )
+      }
+      );
     }
     return next();
   } catch (BadRequest) {
