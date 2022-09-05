@@ -3,6 +3,8 @@ import cors from 'cors';
 import routes from './routes/index';
 import './infra/database/mongo/index';
 import 'dotenv/config';
+import morganBody from 'morgan-body';
+import logMorgan from './config/morgan-logger';
 class App {
   public express: express.Application;
 
@@ -13,6 +15,10 @@ class App {
   }
 
   private middlewares ():void {
+    morganBody(this.express, {
+      noColors: true,
+      stream: logMorgan
+    });
     this.express.use(express.json({}));
     this.express.use(cors());
   }
