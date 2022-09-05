@@ -5,7 +5,7 @@
   "main": "src/app.ts",
   "scripts": {
     "predev": "eslint . --ext .ts --fix",
-    "dev": "nodemon src/server.ts"
+    "dev": "nodemon src/server.ts --ignore __tests__"
   },
   "repository": {
     "type": "git",
