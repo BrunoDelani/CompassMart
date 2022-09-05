@@ -1,0 +1,16 @@
+
+Request: POST /api/v1/authenticate at Mon Sep 05 2022 10:04:12 GMT-0400, IP: ::1, User Agent: PostmanRuntime/7.29.2
+Request Body:
+{
+	"email": "5@gmail.com",
+	"password": "123456"
+}
+Response Body:
+{
+	"email": "5@gmail.com",
+	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVAZ21haWwuY29tIiwiaWF0IjoxNjYyMzg2NjUyLCJleHAiOjE2NjIzODY3Mzh9.uzIvQbNdvgjVPsh0Ff4VcaHA-uh_DrnH_ATfZ_wQ97M"
+}
+Response: 200 167.208 ms 
+
+Request: GET /api/v1/authenticate at Mon Sep 05 2022 10:14:54 GMT-0400, IP: ::1, User Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.134 Safari/537.36 OPR/89.0.4447.104
+Response: 404 2.727 ms 
