@@ -1,0 +1,40 @@
+
+Request: POST /api/v1/authenticate at Mon Sep 05 2022 08:49:37 GMT-0400, IP: ::1, User Agent: PostmanRuntime/7.29.2
+Request Body:
+{
+	"email": "5@gmail.com",
+	"password": "123456"
+}
+Response Body:
+{
+	"email": "5@gmail.com",
+	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVAZ21haWwuY29tIiwiaWF0IjoxNjYyMzgyMTc3LCJleHAiOjE2NjIzODIyNjN9.n8WJOznee6hjXAxAPEdWwhdquno_Fj_wKSGDyJbPmXg"
+}
+Response: 200 154.147 ms 
+
+Request: GET /api/v1/product/marketplace/630d23ea7831e867d09d03db at Mon Sep 05 2022 08:49:51 GMT-0400, IP: ::1, User Agent: PostmanRuntime/7.29.2
+Response Body:
+{
+	"walmart": {
+		"id": "630d23ea7831e867d09d03db",
+		"product": {
+			"category": {
+				"path": {
+					"name": [
+						"Mercearia"
+					]
+				}
+			},
+			"salesPrice": 10.9,
+			"listPrice": "R$ 10,90",
+			"codes": [
+				"000",
+				"000",
+				"000",
+				"009",
+				"9"
+			]
+		}
+	}
+}
+Response: 200 66.015 ms 

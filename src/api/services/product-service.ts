@@ -132,7 +132,6 @@ class ProductService {
           for (let i = 0; i < optional[1]; i++) {
             value = value.slice(1);
           }
-          console.log('valor do break', breakValue);
           newValue.push(breakValue);
           breakValue = '';
         }
