@@ -48,6 +48,7 @@
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-n": "^15.2.4",
     "eslint-plugin-promise": "^6.0.0",
+    "faker": "^5.5.3",
     "jest": "^28.0.0",
     "nodemon": "^2.0.19",
     "supertest": "^6.2.4",

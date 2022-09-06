@@ -15,3 +15,5 @@
 {"level":"info","message":"Connection established with the database CompassMartTests.","timestamp":"2022-09-06T17:11:01.136Z"}
 {"level":"info","message":"Connection established with the database CompassMartTests.","timestamp":"2022-09-06T17:14:13.300Z"}
 {"level":"info","message":"Connection established with the database CompassMartTests.","timestamp":"2022-09-06T17:14:13.330Z"}
+{"level":"info","message":"Server running in port '3000'","timestamp":"2022-09-06T17:22:50.633Z"}
+{"level":"info","message":"Connection established with the database CompassMart.","timestamp":"2022-09-06T17:22:51.337Z"}
