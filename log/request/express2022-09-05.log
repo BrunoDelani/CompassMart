@@ -1,0 +1,347 @@
+
+Request: GET /api/v1/api-docs/ at Mon Sep 05 2022 18:08:06 GMT-0400, IP: ::1, User Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.134 Safari/537.36 OPR/89.0.4447.104
+Response Body:
+
+<!-- HTML for static distribution bundle build -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Swagger UI</title>
+  <link rel="stylesheet" type="text/css" href="./swagger-ui.css" >
+  <link rel="icon" type="image/png" href="./favicon-32x32.png" sizes="32x32" /><link rel="icon" type="image/png" href="./favicon-16x16.png" sizes="16x16" />
+  <style>
+    html
+    {
+      box-sizing: border-box;
+      overflow: -moz-scrollbars-vertical;
+      overflow-y: scroll;
+    }
+    *,
+    *:before,
+    *:after
+    {
+      box-sizing: inherit;
+    }
+
+    body {
+      margin:0;
+      background: #fafafa;
+    }
+  </style>
+</head>
+
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="position:absolute;width:0;height:0">
+  <defs>
+    <symbol viewBox="0 0 20 20" id="unlocked">
+      <path d="M15.8 8H14V5.6C14 2.703 12.665 1 10 1 7.334 1 6 2.703 6 5.6V6h2v-.801C8 3.754 8.797 3 10 3c1.203 0 2 .754 2 2.199V8H4c-.553 0-1 .646-1 1.199V17
+Response: 304 8.057 ms 
+
+Request: GET /api/v1/api-docs/swagger-ui.css at Mon Sep 05 2022 18:08:06 GMT-0400, IP: ::1, User Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.134 Safari/537.36 OPR/89.0.4447.104
+Response: 304 2.595 ms 
+
+Request: GET /api/v1/api-docs/swagger-ui-bundle.js at Mon Sep 05 2022 18:08:06 GMT-0400, IP: ::1, User Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.134 Safari/537.36 OPR/89.0.4447.104
+Response: 304 2.864 ms 
+
+Request: GET /api/v1/api-docs/swagger-ui-init.js at Mon Sep 05 2022 18:08:06 GMT-0400, IP: ::1, User Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.134 Safari/537.36 OPR/89.0.4447.104
+Response Body:
+
+window.onload = function() {
+  // Build a system
+  var url = window.location.search.match(/url=([^&]+)/);
+  if (url && url.length > 1) {
+    url = decodeURIComponent(url[1]);
+  } else {
+    url = window.location.origin;
+  }
+  var options = {
+  "swaggerDoc": {
+    "openapi": "3.0.0",
+    "servers": [
+      {
+        "url": "http://localhost:3000/"
+      }
+    ],
+    "info": {
+      "title": "Compass Mart",
+      "description": "Compass Mart API",
+      "version": "0.0.1",
+      "contact": {
+        "email": "bruno.cirino.pb@compasso.com.br"
+      },
+      "license": {
+        "name": "Lincença: GPLv3",
+        "url": "https://www.gnu.org/licenses/gpl-3.0.html"
+      }
+    },
+    "tags": [
+      {
+        "name": "Products",
+        "description": "Operations about products"
+      },
+      {
+        "name": "Users",
+        "description": "Operations about user"
+      }
+    ],
+    "paths": {
+      "/api/v1/product": {
+        "get": {
+          "summary": "Search all products",
+        
+Response: 304 0.556 ms 
+
+Request: GET /api/v1/api-docs/swagger-ui-standalone-preset.js at Mon Sep 05 2022 18:08:06 GMT-0400, IP: ::1, User Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.134 Safari/537.36 OPR/89.0.4447.104
+Response: 304 2.873 ms 
+
+Request: GET /api/v1/user at Mon Sep 05 2022 18:08:28 GMT-0400, IP: ::1, User Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.134 Safari/537.36 OPR/89.0.4447.104
+Response Body:
+{
+	"users": [
+		{
+			"id": "630d46f4c460698041635309",
+			"email": "2@gmail.com"
+		},
+		{
+			"id": "630d64e0da2264925f723d89",
+			"email": "1@gmail.com"
+		},
+		{
+			"id": "630d64f4da2264925f723d8e",
+			"email": "5@gmail.com"
+		},
+		{
+			"id": "631636adc0de2e2c54b33842",
+			"email": "br.delani@gmail.com"
+		},
+		{
+			"id": "631636d2c0de2e2c54b33845",
+			"email": "bruno.cirino.pb@compasso.com.br"
+		}
+	],
+	"total": 5,
+	"limit": 50,
+	"offsets": 1,
+	"offset": 1
+}
+Response: 200 77.883 ms 
+
+Request: POST /api/v1/authenticate at Mon Sep 05 2022 19:02:48 GMT-0400, IP: ::1, User Agent: PostmanRuntime/7.29.2
+Request Body:
+{
+	"email": "bruno.cirino.pb@compasso.com.br",
+	"password": "123456"
+}
+Response Body:
+{
+	"BadRequest": {
+		"message": "User not found.",
+		"statusCode": 404
+	}
+}
+Response: 404 87.656 ms 
+
+Request: POST /api/v1/authenticate at Mon Sep 05 2022 19:06:20 GMT-0400, IP: ::ffff:127.0.0.1, User Agent: -
+Response Body:
+{
+	"message": "Bad Request",
+	"details": [
+		{
+			"name": "email",
+			"description": "\"email\" is required"
+		},
+		{
+			"name": "password",
+			"description": "\"password\" is required"
+		}
+	]
+}
+Response: 400 11.942 ms 
+
+Request: POST /api/v1/authenticate at Mon Sep 05 2022 19:06:56 GMT-0400, IP: ::ffff:127.0.0.1, User Agent: -
+Response Body:
+{
+	"message": "Bad Request",
+	"details": [
+		{
+			"name": "email",
+			"description": "\"email\" is required"
+		},
+		{
+			"name": "password",
+			"description": "\"password\" is required"
+		}
+	]
+}
+Response: 400 10.961 ms 
+
+Request: POST /api/v1/authenticate at Mon Sep 05 2022 19:11:36 GMT-0400, IP: ::ffff:127.0.0.1, User Agent: -
+Response Body:
+{
+	"message": "Bad Request",
+	"details": [
+		{
+			"name": "email",
+			"description": "\"email\" is required"
+		},
+		{
+			"name": "password",
+			"description": "\"password\" is required"
+		}
+	]
+}
+Response: 400 10.634 ms 
+
+Request: GET /api/v1/user?page=1&limit at Mon Sep 05 2022 19:13:39 GMT-0400, IP: ::1, User Agent: PostmanRuntime/7.29.2
+Response Body:
+{
+	"BadRequest": {
+		"message": "Not users found.",
+		"statusCode": 404
+	}
+}
+Response: 404 70.681 ms 
+
+Request: GET /api/v1/user?page=1&limit at Mon Sep 05 2022 19:14:16 GMT-0400, IP: ::1, User Agent: PostmanRuntime/7.29.2
+Response Body:
+{
+	"BadRequest": {
+		"message": "Not users found.",
+		"statusCode": 404
+	}
+}
+Response: 404 58.260 ms 
+
+Request: POST /api/v1/user at Mon Sep 05 2022 19:14:20 GMT-0400, IP: ::1, User Agent: PostmanRuntime/7.29.2
+Request Body:
+{
+	"email": "bruno.cirino.pb@compasso.com.br",
+	"password": "$2b$10$4h.AsDejxvcIELORgk1uDe2/9poyxlBboSYo4QF/51HPU1RGonG7S"
+}
+Response Body:
+{
+	"id": "631682cc5730b94fecc10380",
+	"email": "bruno.cirino.pb@compasso.com.br",
+	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImJydW5vLmNpcmluby5wYkBjb21wYXNzby5jb20uYnIiLCJpYXQiOjE2NjI0MTk2NjAsImV4cCI6MTY2MjQxOTc0Nn0.0RHXS5NlIhxgveTt1QgDQgRMlJD_s5FtZdxxJLbfzKI"
+}
+Response: 201 225.708 ms 
+
+Request: GET /api/v1/user?page=1&limit at Mon Sep 05 2022 19:14:26 GMT-0400, IP: ::1, User Agent: PostmanRuntime/7.29.2
+Response Body:
+{
+	"users": [
+		{
+			"id": "631682cc5730b94fecc10380",
+			"email": "bruno.cirino.pb@compasso.com.br"
+		}
+	],
+	"total": 1,
+	"limit": 50,
+	"offsets": 1,
+	"offset": 1
+}
+Response: 200 61.690 ms 
+
+Request: POST /api/v1/product at Mon Sep 05 2022 19:14:39 GMT-0400, IP: ::1, User Agent: PostmanRuntime/7.29.2
+Request Body:
+{
+	"title": "Azeites, Óleos e Vinagres",
+	"description": "Óleo de Soja Soya Garrafa 900ml",
+	"department": "Mercearia",
+	"brand": "Soya",
+	"price": 10.9,
+	"qtd_stock": 100,
+	"bar_codes": "0000000000099",
+	"stock_control_enabled": true
+}
+Response Body:
+{
+	"id": "631682df5730b94fecc10385",
+	"title": "Azeites, Óleos e Vinagres",
+	"description": "Óleo de Soja Soya Garrafa 900ml",
+	"department": "Mercearia",
+	"brand": "Soya",
+	"price": 10.9,
+	"qtd_stock": 100,
+	"stock_control_enabled": true,
+	"bar_codes": "0000000000099",
+	"created_at": "2022-09-05T23:14:39.795Z",
+	"updated_at": "2022-09-05T23:14:39.795Z"
+}
+Response: 201 139.038 ms 
+
+Request: GET /api/v1/product/marketplace/631682df5730b94fecc10385 at Mon Sep 05 2022 19:15:04 GMT-0400, IP: ::1, User Agent: PostmanRuntime/7.29.2
+Response Body:
+{
+	"walmart": {
+		"id": "631682df5730b94fecc10385",
+		"product": {
+			"category": {
+				"path": {
+					"name": [
+						"Mercearia"
+					]
+				}
+			},
+			"salesPrice": 10.9,
+			"listPrice": "R$ 10,90",
+			"codes": [
+				"000",
+				"000",
+				"000",
+				"009",
+				"9"
+			]
+		}
+	}
+}
+Response: 200 82.457 ms 
+
+Request: POST /api/v1/authenticate at Mon Sep 05 2022 19:16:22 GMT-0400, IP: ::ffff:127.0.0.1, User Agent: -
+Response Body:
+{
+	"message": "Bad Request",
+	"details": [
+		{
+			"name": "email",
+			"description": "\"email\" is required"
+		},
+		{
+			"name": "password",
+			"description": "\"password\" is required"
+		}
+	]
+}
+Response: 400 10.611 ms 
+
+Request: POST /api/v1/user at Mon Sep 05 2022 19:39:30 GMT-0400, IP: ::ffff:127.0.0.1, User Agent: -
+Request Body:
+{
+	"email": "bruno.cirino.pb@compasso.com.br",
+	"password": "123456"
+}
+Response Body:
+{
+	"BadRequest": {
+		"message": "This email is already in use.",
+		"statusCode": 400
+	}
+}
+Response: 400 1145.367 ms 
+
+Request: POST /api/v1/user at Mon Sep 05 2022 19:41:25 GMT-0400, IP: ::ffff:127.0.0.1, User Agent: -
+Request Body:
+{
+	"email": "bruno.cirino.pb@compasso.com.br",
+	"password": "123456"
+}
+Response Body:
+{
+	"BadRequest": {
+		"message": "This email is already in use.",
+		"statusCode": 400
+	}
+}
+Response: 400 1326.483 ms 

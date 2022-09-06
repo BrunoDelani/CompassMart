@@ -1,10 +1,18 @@
-describe('Authentication', () => {
-  it('should receive JWT token when authenticated with valid credentials', () => {
-    const x = 4;
-    const y = 2;
+import request from 'supertest';
+import app from "../../src/app";
 
-    const sum = x + y;
+let server = request(app);
+jest.setTimeout(60000);
 
-    expect(sum).toBe(6);
-  });
+describe('POST /authentication', () => {
+    it('should receive JWT token when authenticated with valid credentials', async () => {
+        const response = await
+            server
+                .post('/api/v1/authenticate')
+                .send({
+                    "email": "bruno.teste@compasso.com.br",
+                    "password": "123456"
+                })
+        expect(response.statusCode).toBe(200);
+    })
 });
