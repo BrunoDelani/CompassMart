@@ -28,4 +28,16 @@ describe('POST /authentication', () => {
         expect(response.statusCode).toBe(401);
         expect(response._body.token).toBeFalsy();
     });
+
+    test('should not authenticate with user not exists', async () => {
+        const response = await
+            server
+                .post('/api/v1/authenticate')
+                .send({
+                    "email": "not_exists@compasso.com.br",
+                    "password": "123"
+                })
+        expect(response.statusCode).toBe(404);
+        expect(response._body.token).toBeFalsy();
+    });
 });
