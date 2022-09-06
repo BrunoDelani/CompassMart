@@ -5,7 +5,7 @@ let server = request(app);
 jest.setTimeout(60000);
 
 describe('POST /authentication', () => {
-    it('should receive JWT token when authenticated with valid credentials', async () => {
+    test('should receive JWT token when authenticated with valid credentials', async () => {
         const response = await
             server
                 .post('/api/v1/authenticate')
@@ -14,5 +14,6 @@ describe('POST /authentication', () => {
                     "password": "123456"
                 })
         expect(response.statusCode).toBe(200);
+        expect(response._body.token).toBeDefined();
     })
 });
