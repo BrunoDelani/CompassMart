@@ -87,3 +87,25 @@ describe('GET /product/low_stock', () => {
         expect(response.statusCode).toBe(404);
     });
 });
+
+describe('POST /product', () => {
+    test('should register product with validad cretendials', async () => {
+        const login = await server.post('/api/v1/authenticate').send(UserToLogin)
+        const response = await server.post('/api/v1/product').send(ProductExampleLowStock).set('Authorization', `Bearer ${login._body.token}`)
+        await server.delete(`/api/v1/product/${ response._body.id }`).set('Authorization', `Bearer ${login._body.token}`)
+        expect(response.statusCode).toBe(201);
+    });
+
+    test('should not register product with invalid token', async () => {
+        const response = await server.post('/api/v1/product').send(ProductExampleLowStock).set('Authorization', `Bearer invalidtoken`)
+        expect(response.statusCode).toBe(401);
+    });
+
+    test('should not register product with bar_codes is already in use', async () => {
+        const login = await server.post('/api/v1/authenticate').send(UserToLogin)
+        const ProductExistsInDB = await server.post('/api/v1/product').send(ProductExample).set('Authorization', `Bearer ${login._body.token}`)
+        const response = await server.post('/api/v1/product').send(ProductExample).set('Authorization', `Bearer ${login._body.token}`)
+        await server.delete(`/api/v1/product/${ ProductExistsInDB._body.id }`).set('Authorization', `Bearer ${login._body.token}`)
+        expect(response.statusCode).toBe(400);
+    });
+});
