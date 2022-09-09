@@ -5,12 +5,27 @@ const faker = require('faker');
 const server = request(app);
 jest.setTimeout(60000);
 
+const PageNotFound = {
+  page: -1,
+  limit: -1
+};
+
 describe('GET /user', () => {
   test('should return all users', async () => {
     const response = await
     server
       .get('/api/v1/user');
     expect(response.statusCode).toBe(200);
+  });
+
+  test('should return page not found with invalid page', async () => {
+    const response = await server.get(`/api/v1/user/?page=${PageNotFound.page}`);
+    expect(response.statusCode).toBe(404);
+  });
+
+  test('should return page not found with invalid limit of results', async () => {
+    const response = await server.get(`/api/v1/product/?limit=${PageNotFound.limit}`);
+    expect(response.statusCode).toBe(401);
   });
 });
 

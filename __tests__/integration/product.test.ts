@@ -3,7 +3,7 @@ import app from '../../src/app';
 const fs = require('fs');
 
 const server = request(app);
-jest.setTimeout(100000);
+jest.setTimeout(1000000);
 
 const UserToLogin = {
   email: 'user_test@compasso.com.br',
@@ -104,8 +104,16 @@ describe('POST /product', () => {
     expect(response.statusCode).toBe(201);
   });
 
+  test('should register product with invalid credentials', async () => {
+    const login = await server.post('/api/v1/authenticate').send(UserToLogin);
+    const response = await server.post('/api/v1/product').send({
+      title: 'create product'
+    }).set('Authorization', `Bearer ${login._body.token}`);
+    expect(response.statusCode).toBe(400);
+  });
+
   test('should not register product with invalid token', async () => {
-    const response = await server.post('/api/v1/product').send(ProductExampleLowStock).set('Authorization', 'Bearer invalidtoken');
+    const response = await server.post('/api/v1/product').send(ProductExampleLowStock);
     expect(response.statusCode).toBe(401);
   });
 
@@ -256,7 +264,7 @@ describe('DELETE /product', () => {
   });
 
   test('should not delete product with invalid token', async () => {
-    const response = await server.delete('/api/v1/product/invalidId').set('Authorization', 'Bearer invalidToken');
+    const response = await server.delete('/api/v1/product/invalidId').set('Authorization', 'Bearer');
     expect(response.statusCode).toBe(401);
   });
 
@@ -283,7 +291,7 @@ describe('GET /product/marketplace', () => {
   });
 
   test('should not mapper product with invalid token', async () => {
-    const response = await server.get('/api/v1/product/marketplace/invalidId').set('Authorization', 'Bearer invalidToken');
+    const response = await server.get('/api/v1/product/marketplace/invalidId').set('Authorization', 'Bearer invalid Token');
     expect(response.statusCode).toBe(401);
   });
 
@@ -300,8 +308,8 @@ describe('POST /product/csv', () => {
     const login = await server.post('/api/v1/authenticate').send(UserToLogin);
     const response = await server
       .post('/api/v1/product/csv')
-      .attach('file', filePath)
-      .set('Authorization', `Bearer ${login._body.token}`);
+      .set('Authorization', `Bearer ${login._body.token}`)
+      .attach('file', filePath);
     expect(response.statusCode).toBe(200);
   });
 
@@ -316,7 +324,7 @@ describe('POST /product/csv', () => {
   test('should not register products with invalid token', async () => {
     const response = await server
       .post('/api/v1/product/csv')
-      .set('Authorization', 'Bearer invalidToken');
+      .set('Authorization', 'B invalidToken');
     expect(response.statusCode).toBe(401);
   });
 });
