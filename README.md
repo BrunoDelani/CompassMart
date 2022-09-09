@@ -39,7 +39,7 @@ Develop the Back-end for a customer who wants to create a system called CompassM
 - Winston
 
 # Database
-Cloud MongoDB -> User and database public
+Cloud MongoDB => User and database public
 
 # Documentation API
 Run application and access: http://localhost:3000/api/v1/api-docs

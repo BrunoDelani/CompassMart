@@ -1,5 +1,5 @@
 node_modules
 .env
 log
-log/request
+!log/request/.gitkeep
 __tests__/coverage
