@@ -1,10 +1,9 @@
 import request from 'supertest';
 import app from '../../src/app';
 const fs = require('fs');
-const faker = require('faker');
 
 const server = request(app);
-jest.setTimeout(60000);
+jest.setTimeout(100000);
 
 const UserToLogin = {
   email: 'user_test@compasso.com.br',
@@ -292,5 +291,32 @@ describe('GET /product/marketplace', () => {
     const login = await server.post('/api/v1/authenticate').send(UserToLogin);
     const response = await server.get('/api/v1/product/marketplace/00000000a00000000a00a000').set('Authorization', `Bearer ${login._body.token}`);
     expect(response.statusCode).toBe(404);
+  });
+});
+
+describe('POST /product/csv', () => {
+  test('should register products with valid credentials', async () => {
+    const filePath = `${__dirname}/testFiles/product-list-test.csv`;
+    const login = await server.post('/api/v1/authenticate').send(UserToLogin);
+    const response = await server
+      .post('/api/v1/product/csv')
+      .attach('file', filePath)
+      .set('Authorization', `Bearer ${login._body.token}`);
+    expect(response.statusCode).toBe(200);
+  });
+
+  test('should not register products if file not found', async () => {
+    const login = await server.post('/api/v1/authenticate').send(UserToLogin);
+    const response = await server
+      .post('/api/v1/product/csv')
+      .set('Authorization', `Bearer ${login._body.token}`);
+    expect(response.statusCode).toBe(404);
+  });
+
+  test('should not register products with invalid token', async () => {
+    const response = await server
+      .post('/api/v1/product/csv')
+      .set('Authorization', 'Bearer invalidToken');
+    expect(response.statusCode).toBe(401);
   });
 });

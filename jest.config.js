@@ -9,6 +9,7 @@ module.exports = {
   coverageDirectory: '__tests__/coverage',
   collectCoverageFrom: [
     'src/**',
+    '!src/server.ts',
     '!src/utils/**',
     '!src/docs/**',
     '!src/config/**',
