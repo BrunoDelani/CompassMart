@@ -161,3 +161,48 @@ describe('PUT /product', () => {
         expect(response.statusCode).toBe(404);
     });
 });
+
+
+describe('PATCH /product', () => {
+    test('should update product with valid credentials', async () => {
+        const login = await server.post('/api/v1/authenticate').send(UserToLogin)
+        const createProduct = await server.post('/api/v1/product').send(ProductExample).set('Authorization', `Bearer ${login._body.token}`)
+        const response = await 
+            server.patch(`/api/v1/product/${ createProduct._body.id }`)
+            .set('Authorization', `Bearer ${login._body.token}`)
+            .send({ qtd_stock: 100 })
+        await server.delete(`/api/v1/product/${ createProduct._body.id }`).set('Authorization', `Bearer ${login._body.token}`)
+        expect(response.statusCode).toBe(200);
+    });
+
+    test('should not update the product with invalid credentials', async () => {
+        const login = await server.post('/api/v1/authenticate').send(UserToLogin)
+        const createProduct = await server.post('/api/v1/product').send(ProductExample).set('Authorization', `Bearer ${login._body.token}`)
+        const response = await 
+            server.put(`/api/v1/product/${ createProduct._body.id }`)
+            .set('Authorization', `Bearer ${login._body.token}`)
+            .send({
+                title: 100
+            })
+        await server.delete(`/api/v1/product/${ createProduct._body.id }`).set('Authorization', `Bearer ${login._body.token}`)
+        expect(response.statusCode).toBe(400);
+    });
+
+    test('should not update product with invalid id', async () => {
+        const login = await server.post('/api/v1/authenticate').send(UserToLogin)
+        const response = await 
+            server.patch('/api/v1/product/invalidId')
+            .set('Authorization', `Bearer ${login._body.token}`)
+            .send({ qtd_stock: 100 })
+        expect(response.statusCode).toBe(400);
+    });
+
+    test('should not update product with product not found', async () => {
+        const login = await server.post('/api/v1/authenticate').send(UserToLogin)
+        const response = await 
+            server.patch('/api/v1/product/00000000a00000000a00a000')
+            .set('Authorization', `Bearer ${login._body.token}`)
+            .send({ qtd_stock: 100 })
+        expect(response.statusCode).toBe(404);
+    });
+});
