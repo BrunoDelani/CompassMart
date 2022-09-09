@@ -188,6 +188,14 @@ describe('PATCH /product', () => {
         expect(response.statusCode).toBe(400);
     });
 
+    test('should not update product with invalid token', async () => {
+        const response = await 
+            server.patch('/api/v1/product/invalidId')
+            .set('Authorization', `Bearer invalidToken`)
+            .send({ qtd_stock: 100 })
+        expect(response.statusCode).toBe(401);
+    });
+
     test('should not update product with invalid id', async () => {
         const login = await server.post('/api/v1/authenticate').send(UserToLogin)
         const response = await 
@@ -197,12 +205,39 @@ describe('PATCH /product', () => {
         expect(response.statusCode).toBe(400);
     });
 
-    test('should not update product with product not found', async () => {
+    test('should not update product if product not found', async () => {
         const login = await server.post('/api/v1/authenticate').send(UserToLogin)
         const response = await 
             server.patch('/api/v1/product/00000000a00000000a00a000')
             .set('Authorization', `Bearer ${login._body.token}`)
             .send({ qtd_stock: 100 })
+        expect(response.statusCode).toBe(404);
+    });
+});
+
+describe('GET BY ID /product', () => {
+    test('should get product with valid credentials', async () => {
+        const login = await server.post('/api/v1/authenticate').send(UserToLogin)
+        const createProduct = await server.post('/api/v1/product').send(ProductExample).set('Authorization', `Bearer ${login._body.token}`)
+        const response = await server.get(`/api/v1/product/${createProduct._body.id}`).set('Authorization', `Bearer ${login._body.token}`)
+        await server.delete(`/api/v1/product/${ createProduct._body.id }`).set('Authorization', `Bearer ${login._body.token}`)
+        expect(response.statusCode).toBe(200);
+    });
+
+    test('should not get product with invalid id', async () => {
+        const login = await server.post('/api/v1/authenticate').send(UserToLogin)
+        const response = await server.get(`/api/v1/product/invalidId`).set('Authorization', `Bearer ${login._body.token}`)
+        expect(response.statusCode).toBe(400);
+    });
+
+    test('should not get product with invalid token', async () => {
+        const response = await server.get(`/api/v1/product/invalidId`).set('Authorization', `Bearer invalidToken`)
+        expect(response.statusCode).toBe(401);
+    });
+
+    test('should not update product if product not found', async () => {
+        const login = await server.post('/api/v1/authenticate').send(UserToLogin)
+        const response = await server.get(`/api/v1/product/00000000a00000000a00a000`).set('Authorization', `Bearer ${login._body.token}`)
         expect(response.statusCode).toBe(404);
     });
 });
