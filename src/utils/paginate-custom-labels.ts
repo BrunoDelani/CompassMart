@@ -10,8 +10,8 @@ class PaginateCustomLabels {
   public readonly prevPage: boolean;
   public readonly nextPage: boolean;
 
-  constructor () {
-    this.docs = 'products';
+  constructor (nameLabel: string) {
+    this.docs = nameLabel;
     this.totalDocs = 'total';
     this.limit = 'limit';
     this.page = 'offset';
@@ -24,4 +24,4 @@ class PaginateCustomLabels {
   }
 }
 
-export default new PaginateCustomLabels();
+export default PaginateCustomLabels;

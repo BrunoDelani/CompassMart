@@ -1,5 +1,5 @@
 import ProductBarcodesExists from '../../errors/product/product-barcodes-exists';
-import PageNotFound from '../../errors/product/product-page-not-found';
+import PageNotFound from '../../errors/page-not-found';
 import ProductNotFound from '../../errors/product/product-not-found';
 import ProductsNotFound from '../../errors/product/products-not-found';
 import { IProduct, IProductQuery, IProductResponse, IResultInsertProducts, IVerifyProduct } from '../models/interfaces/product-interface';
@@ -65,6 +65,97 @@ class ProductService {
     await productRepository.deleteByID(id);
   }
 
+  async mapperProduct (id: ObjectId): Promise<any> {
+    const result: any = await productRepository.findById(id);
+    if (result === null) throw new ProductNotFound();
+    const mapper = require('../mapper/mapper.json').fields;
+    let newProductFromatter: any = {};
+    let valueField: any = {};
+    const insertValues = (mMap: string[], pMap: string[], type: string, optional: Array<string | number>, newProductFromatter: any) => {
+      // eslint-disable-next-line no-unreachable-loop
+      for (let index = 0; index <= (mMap.length - 1); index++) {
+        for (const key in newProductFromatter) {
+          if (typeof newProductFromatter[key] === 'object') {
+            if (mMap[index] === key) {
+              mMap.shift();
+              newProductFromatter[key] = {
+                ...newProductFromatter[key],
+                ...insertValues(mMap, pMap, type, optional, newProductFromatter[key])
+              };
+              return newProductFromatter;
+            }
+          } else if (mMap[index] === key) {
+            mMap.shift();
+            newProductFromatter[key] = { ...newProductFromatter[key], ...insertValues(mMap, pMap, type, optional, newProductFromatter) };
+            return newProductFromatter;
+          };
+        }
+        if (mMap[index] !== mMap[mMap.length - 1]) {
+          const field = mMap[index];
+          mMap.shift();
+          valueField = { [field]: insertValues(mMap, pMap, type, optional, newProductFromatter) };
+          return valueField;
+        } else {
+          valueField = { [mMap[index]]: this.formatterValue(result[pMap.toString()], type, optional) };
+          return valueField;
+        }
+      };
+    };
+    for (const key in mapper) {
+      const mMap: string[] = mapper[key].fieldMarket.split('.');
+      const pMap: string[] = mapper[key].fieldProduct.split('.');
+      const type: string = mapper[key].type;
+      const optional: Array<string | number> = mapper[key].optional;
+      pMap.shift();
+      valueField = {};
+      newProductFromatter = { ...newProductFromatter, ...insertValues(mMap, pMap, type, optional, newProductFromatter) };
+    };
+    return newProductFromatter;
+  }
+
+  formatterValue (value: any, type: string, optional: Array<any>): any {
+    if (optional !== undefined) {
+      if (optional[0] === 'currency') {
+        const newValue = new Intl.NumberFormat(
+          optional[1], {
+            style: 'currency',
+            currency: optional[2]
+          }).format(value);
+        return newValue;
+      } else if (optional[0] === 'break') {
+        const newValue: Array<String> = [];
+        let breakValue: string = '';
+        while (value.length > 0) {
+          for (let i = 0; i < optional[1]; i++) {
+            if (value[i]) breakValue += value[i];
+          }
+          for (let i = 0; i < optional[1]; i++) {
+            value = value.slice(1);
+          }
+          newValue.push(breakValue);
+          breakValue = '';
+        }
+        return newValue;
+      };
+    } else {
+      switch (type) {
+      case 'text':
+        return value.toString();
+      case 'array':
+        return [value];
+      case 'boolean':
+        if (value === true || value === 1) {
+          return true;
+        } else {
+          return false;
+        }
+      case 'number':
+        return Number(value);
+      }
+    }
+    return undefined;
+  }
+
   async insertListProductsCSV (csvFormated: String[][]): Promise<IResultInsertProducts> {
     const insertProducts: IProduct[] = [];
     const listResult: IResultInsertProducts = {
@@ -116,59 +207,75 @@ class ProductService {
     const verificador: IVerifyProduct = {
       verify: true
     };
-    if (newProduct.title === '') {
+    if (['undefined', 'null', ''].includes(newProduct.title.toString())) {
       verificador.verify = false;
       verificador.messages === undefined
-        ? verificador.messages = ['Title is invalid.']
-        : verificador.messages.push('Title is invalid.');
+        ? verificador.messages = ['Title is null.']
+        : verificador.messages.push('Title is null.');
     }
 
-    if (newProduct.description === '') {
+    if (['undefined', 'null', ''].includes(newProduct.description.toString())) {
       verificador.verify = false;
       verificador.messages === undefined
-        ? verificador.messages = ['Description is invalid.']
-        : verificador.messages.push('Description is invalid.');
+        ? verificador.messages = ['Description is null.']
+        : verificador.messages.push('Description is null.');
     }
 
-    if (newProduct.department === '') {
+    if (['undefined', 'null', ''].includes(newProduct.department.toString())) {
       verificador.verify = false;
       verificador.messages === undefined
-        ? verificador.messages = ['Department is invalid.']
-        : verificador.messages.push('Department is invalid.');
+        ? verificador.messages = ['Department is null.']
+        : verificador.messages.push('Department is null.');
     }
 
-    if (newProduct.brand === '') {
+    if (['undefined', 'null', ''].includes(newProduct.brand.toString())) {
       verificador.verify = false;
       verificador.messages === undefined
-        ? verificador.messages = ['Brand is invalid.']
-        : verificador.messages.push('Brand is invalid.');
+        ? verificador.messages = ['Brand is null.']
+        : verificador.messages.push('Brand is null.');
     }
 
-    if (newProduct.qtd_stock > 100000 || newProduct.qtd_stock < 1) {
+    if (['undefined', 'null', ''].includes(newProduct.qtd_stock.toString())) {
       verificador.verify = false;
       verificador.messages === undefined
-        ? verificador.messages = [`Stock ${newProduct.qtd_stock} is invalid.`]
-        : verificador.messages.push(`Stock ${newProduct.qtd_stock} is invalid.`);
+        ? verificador.messages = ['Stock is null.']
+        : verificador.messages.push('Stock is null.');
+    } else if (newProduct.qtd_stock > 100000 || newProduct.qtd_stock < 1) {
+      verificador.verify = false;
+      verificador.messages === undefined
+        ? verificador.messages = [`Stock is ${newProduct.qtd_stock}.`]
+        : verificador.messages.push(`Stock is ${newProduct.qtd_stock}.`);
     }
 
-    if (newProduct.price < 0.01 || newProduct.price > 1000) {
+    if (['undefined', 'null', ''].includes(newProduct.price.toString())) {
       verificador.verify = false;
       verificador.messages === undefined
-        ? verificador.messages = [`Price ${newProduct.price} is invalid.`]
-        : verificador.messages.push(`Price ${newProduct.price} is invalid.`);
+        ? verificador.messages = ['Price is null.']
+        : verificador.messages.push('Price is null.');
+    } else if (newProduct.price < 0.01 || newProduct.price > 1000) {
+      verificador.verify = false;
+      verificador.messages === undefined
+        ? verificador.messages = [`Price is ${newProduct.price}.`]
+        : verificador.messages.push(`Price is ${newProduct.price}.`);
     }
-    if (newProduct.bar_codes.length !== 13 || (isNaN(Number(newProduct.bar_codes)))) {
+
+    if (newProduct.bar_codes.length !== 13) {
       verificador.verify = false;
       verificador.messages === undefined
-        ? verificador.messages = [`bar_codes ${newProduct.bar_codes} is invalid.`]
-        : verificador.messages.push(`bar_codes ${newProduct.bar_codes} is invalid.`);
+        ? verificador.messages = ['bar_codes hasn\'t 13 digit.']
+        : verificador.messages.push('bar_codes hasn\'t 13 digit.');
+    } else if ((isNaN(Number(newProduct.bar_codes)))) {
+      verificador.verify = false;
+      verificador.messages === undefined
+        ? verificador.messages = ['bar_codes is not a number.']
+        : verificador.messages.push('bar_codes is not a number.');
     }
 
     if (await productRepository.findByBarCode(newProduct.bar_codes)) {
       verificador.verify = false;
       verificador.messages === undefined
-        ? verificador.messages = [`bar_codes ${newProduct.bar_codes} is duplicated`]
-        : verificador.messages.push(`bar_codes ${newProduct.bar_codes} is duplicated`);
+        ? verificador.messages = ['bar_codes duplicate']
+        : verificador.messages.push('bar_codes duplicate');
     }
     if (verificador.messages && verificador.messages.length < 2) {
       verificador.message = verificador.messages[0];

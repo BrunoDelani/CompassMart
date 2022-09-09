@@ -1,0 +1,725 @@
+{
+  "openapi" : "3.0.0",
+  "servers" : [ {
+    "url" : "http://localhost:3000/"
+  } ],
+  "info" : {
+    "title" : "Compass Mart",
+    "description" : "Compass Mart API",
+    "version" : "0.0.1",
+    "contact" : {
+      "email" : "bruno.cirino.pb@compasso.com.br"
+    },
+    "license" : {
+      "name" : "Lincença: GPLv3",
+      "url" : "https://www.gnu.org/licenses/gpl-3.0.html"
+    }
+  },
+  "tags" : [ {
+    "name" : "Products",
+    "description" : "Operations about products"
+  }, {
+    "name" : "Users",
+    "description" : "Operations about user"
+  } ],
+  "paths" : {
+    "/api/v1/product" : {
+      "get" : {
+        "summary" : "Search all products",
+        "description" : "Search all products in system.",
+        "tags" : [ "Products" ],
+        "parameters" : [ {
+          "name" : "department",
+          "in" : "query",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "brand",
+          "in" : "query",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "minimum" : 1,
+            "format" : "int32"
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "minimum" : 1,
+            "format" : "int32"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "search results matching criteria.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Product"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Products not found, empty page."
+          },
+          "500" : {
+            "description" : "Error page."
+          }
+        },
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ]
+      },
+      "post" : {
+        "summary" : "Insert product in system",
+        "description" : "Insert product in system.",
+        "tags" : [ "Products" ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "title" : {
+                    "type" : "string",
+                    "example" : "Azeites, Óleos e Vinagres"
+                  },
+                  "description" : {
+                    "type" : "string",
+                    "example" : "Óleo de Soja Soya Garrafa 900ml"
+                  },
+                  "department" : {
+                    "type" : "string",
+                    "example" : "Mercearia"
+                  },
+                  "brand" : {
+                    "type" : "string",
+                    "example" : "Soya"
+                  },
+                  "price" : {
+                    "type" : "number",
+                    "example" : 9.49
+                  },
+                  "qtd_stock" : {
+                    "type" : "number",
+                    "example" : 30137
+                  },
+                  "stock_control_enabled" : {
+                    "type" : "boolean",
+                    "example" : true
+                  },
+                  "bar_codes" : {
+                    "type" : "string",
+                    "example" : 7891107101621
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "success insert product in system.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Product"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "This bar_codes is already in use."
+          },
+          "500" : {
+            "description" : "Error page."
+          }
+        },
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ]
+      }
+    },
+    "/api/v1/product/low_stock" : {
+      "get" : {
+        "summary" : "Search low stock",
+        "description" : "Search all products with low stock.",
+        "tags" : [ "Products" ],
+        "parameters" : [ {
+          "name" : "page",
+          "in" : "query",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "minimum" : 1,
+            "format" : "int32"
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "minimum" : 1,
+            "format" : "int32"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "search results matching criteria.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Product"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Products not found, empty page."
+          },
+          "500" : {
+            "description" : "Error page."
+          }
+        },
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ]
+      }
+    },
+    "/api/v1/product/{id}" : {
+      "parameters" : [ {
+        "name" : "id",
+        "in" : "path",
+        "schema" : {
+          "type" : "string"
+        },
+        "required" : true
+      } ],
+      "get" : {
+        "summary" : "Search product by ID",
+        "description" : "Search product by ID in system.",
+        "tags" : [ "Products" ],
+        "responses" : {
+          "200" : {
+            "description" : "search results matching criteria.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Product"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Product not found, empty page."
+          },
+          "500" : {
+            "description" : "Error page."
+          }
+        },
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ]
+      },
+      "put" : {
+        "summary" : "Update product by ID",
+        "description" : "Product update passing all data to the system.",
+        "tags" : [ "Products" ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "required" : [ "title", "description", "department", "brand", "price", "qtd_stock", "stock_control_enabled", "bar_codes" ],
+                "properties" : {
+                  "title" : {
+                    "type" : "string",
+                    "example" : "Azeites, Óleos e Vinagres"
+                  },
+                  "description" : {
+                    "type" : "string",
+                    "example" : "Óleo de Soja Soya Garrafa 900ml"
+                  },
+                  "department" : {
+                    "type" : "string",
+                    "example" : "Mercearia"
+                  },
+                  "brand" : {
+                    "type" : "string",
+                    "example" : "Soya"
+                  },
+                  "price" : {
+                    "type" : "number",
+                    "example" : 9.49
+                  },
+                  "qtd_stock" : {
+                    "type" : "number",
+                    "example" : 30137
+                  },
+                  "stock_control_enabled" : {
+                    "type" : "boolean",
+                    "example" : true
+                  },
+                  "bar_codes" : {
+                    "type" : "string",
+                    "example" : 7891107101621
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Product updated.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Product"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Product not found, empty page."
+          },
+          "500" : {
+            "description" : "Error page."
+          }
+        },
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ]
+      },
+      "patch" : {
+        "summary" : "Update product by ID",
+        "description" : "Product update can only pass one data.",
+        "tags" : [ "Products" ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "title" : {
+                    "type" : "string",
+                    "example" : "Azeites, Óleos e Vinagres"
+                  },
+                  "description" : {
+                    "type" : "string",
+                    "example" : "Óleo de Soja Soya Garrafa 900ml"
+                  },
+                  "department" : {
+                    "type" : "string",
+                    "example" : "Mercearia"
+                  },
+                  "brand" : {
+                    "type" : "string",
+                    "example" : "Soya"
+                  },
+                  "price" : {
+                    "type" : "number",
+                    "example" : 9.49
+                  },
+                  "qtd_stock" : {
+                    "type" : "number",
+                    "example" : 30137
+                  },
+                  "stock_control_enabled" : {
+                    "type" : "boolean",
+                    "example" : true
+                  },
+                  "bar_codes" : {
+                    "type" : "string",
+                    "example" : 7891107101621
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Product updated.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Product"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Product not found, empty page."
+          },
+          "500" : {
+            "description" : "Error page."
+          }
+        },
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ]
+      },
+      "delete" : {
+        "summary" : "Delete product by ID",
+        "description" : "Delete product by ID in system.",
+        "tags" : [ "Products" ],
+        "responses" : {
+          "204" : {
+            "description" : "Not content."
+          },
+          "404" : {
+            "description" : "Product not found, empty page."
+          },
+          "500" : {
+            "description" : "Error page."
+          }
+        },
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ]
+      }
+    },
+    "/api/v1/product/csv" : {
+      "post" : {
+        "summary" : "Insert product in system by csv file",
+        "description" : "Insert product in system by csv file.",
+        "tags" : [ "Products" ],
+        "requestBody" : {
+          "content" : {
+            "csv" : {
+              "schema" : {
+                "type" : "string",
+                "format" : "binary"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "success insert product in system.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "properties" : {
+                    "success" : {
+                      "type" : "number",
+                      "example" : 200
+                    },
+                    "errors" : {
+                      "type" : "number",
+                      "example" : 8
+                    },
+                    "error_details" : {
+                      "type" : "array",
+                      "items" : {
+                        "properties" : {
+                          "title" : {
+                            "type" : "string",
+                            "example" : "Azeites, Óleos e Vinagres"
+                          },
+                          "bar_codes" : {
+                            "type" : "string",
+                            "example" : 7891107101621
+                          },
+                          "error" : {
+                            "type" : "string",
+                            "example" : "bar_codes duplicate"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "This bar_codes is already in use."
+          },
+          "500" : {
+            "description" : "Error page."
+          }
+        },
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ]
+      }
+    },
+    "/api/v1/user" : {
+      "get" : {
+        "summary" : "Search all users",
+        "description" : "Search all users in system.",
+        "tags" : [ "Users" ],
+        "parameters" : [ {
+          "name" : "page",
+          "in" : "query",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "minimum" : 1,
+            "format" : "int32"
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "minimum" : 1,
+            "format" : "int32"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "search results matching criteria.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Users not found, empty page."
+          },
+          "500" : {
+            "description" : "Error page."
+          }
+        }
+      },
+      "post" : {
+        "summary" : "Insert user in system",
+        "description" : "Insert user in system.",
+        "tags" : [ "Users" ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "email" : {
+                    "type" : "string",
+                    "example" : "bruno.cirino.pb@compasso.com.br"
+                  },
+                  "password" : {
+                    "type" : "string",
+                    "example" : 123456
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "success insert user in system.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "This email is already in use."
+          },
+          "500" : {
+            "description" : "Error page."
+          }
+        }
+      }
+    },
+    "/api/v1/user/{id}" : {
+      "parameters" : [ {
+        "name" : "id",
+        "in" : "path",
+        "schema" : {
+          "type" : "string"
+        },
+        "required" : true
+      } ],
+      "delete" : {
+        "summary" : "Delete product by ID",
+        "description" : "Delete product by ID in system.",
+        "tags" : [ "Users" ],
+        "responses" : {
+          "204" : {
+            "description" : "Not content."
+          },
+          "404" : {
+            "description" : "Product not found, empty page."
+          },
+          "500" : {
+            "description" : "Error page."
+          }
+        }
+      }
+    },
+    "/api/v1/authenticate" : {
+      "post" : {
+        "summary" : "Login user in system",
+        "description" : "Enter in system.",
+        "tags" : [ "Users" ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "email" : {
+                    "type" : "string",
+                    "example" : "bruno.cirino.pb@compasso.com.br"
+                  },
+                  "password" : {
+                    "type" : "string",
+                    "example" : 123456
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "success user in system.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "email" : {
+                      "type" : "string",
+                      "example" : "bruno.cirino.pb@compasso.com.br"
+                    },
+                    "token" : {
+                      "type" : "string",
+                      "example" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVAZ21haWwuY29tIiwiaWF0IjoxNjYyMzg2NjUyLCJleHAiOjE2NjIzODY3Mzh9.uzIvQbNdvgjVPsh0Ff4VcaHA-uh_DrnH_ATfZ_wQ97M"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Invalid password."
+          },
+          "404" : {
+            "description" : "User not found."
+          },
+          "500" : {
+            "description" : "Error page."
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "User" : {
+        "type" : "object",
+        "required" : [ "email", "password" ],
+        "properties" : {
+          "_id" : {
+            "type" : "string",
+            "format" : "ObjectId",
+            "example" : "630d46d3827287f5c72e1668"
+          },
+          "email" : {
+            "type" : "string",
+            "example" : "br@gmail.com"
+          },
+          "password" : {
+            "type" : "string",
+            "example" : 123456
+          }
+        }
+      },
+      "Product" : {
+        "type" : "object",
+        "required" : [ "title", "description", "department", "brand", "price", "qtd_stock", "bar_codes" ],
+        "properties" : {
+          "_id" : {
+            "type" : "string",
+            "format" : "ObjectId",
+            "example" : "630930cdce0e962f7e743c60"
+          },
+          "title" : {
+            "type" : "string",
+            "example" : "Azeites, Óleos e Vinagres"
+          },
+          "description" : {
+            "type" : "string",
+            "example" : "Óleo de Soja Soya Garrafa 900ml"
+          },
+          "department" : {
+            "type" : "string",
+            "example" : "Mercearia"
+          },
+          "brand" : {
+            "type" : "string",
+            "example" : "Soya"
+          },
+          "price" : {
+            "type" : "number",
+            "example" : 9.49
+          },
+          "qtd_stock" : {
+            "type" : "number",
+            "example" : 30137
+          },
+          "stock_control_enabled" : {
+            "type" : "boolean",
+            "example" : true
+          },
+          "bar_codes" : {
+            "type" : "string",
+            "example" : 7891107101621
+          },
+          "created_at" : {
+            "type" : "string",
+            "format" : "date-time",
+            "example" : "2021-06-30T20:18:23+00:00"
+          },
+          "update_at" : {
+            "type" : "string",
+            "format" : "date-time",
+            "example" : "2021-06-30T20:18:23+00:00"
+          }
+        }
+      }
+    },
+    "securitySchemes" : {
+      "bearerAuth" : {
+        "type" : "http",
+        "scheme" : "bearer",
+        "bearerFormat" : "JWT"
+      }
+    }
+  }
+}

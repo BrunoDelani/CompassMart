@@ -1,5 +1,12 @@
 import mongoose from 'mongoose';
-import 'dotenv/config';
+import winstonLogger from '../../../config/winston-logger';
+import path from 'path';
+
+require('dotenv').config({
+  path: process.env.NODE_ENV === 'test'
+    ? path.resolve('.env.tests')
+    : path.resolve('.env')
+});
 
 class Database {
   constructor () {
@@ -7,10 +14,13 @@ class Database {
   }
 
   connect () {
-    mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_CLUSTER}.w1es0.mongodb.net/${process.env.DB_NAME}`);
-    mongoose.connection.on('error', console.log.bind(console, 'Could not connect to database.'));
+    const dbConnectionPath:string = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_CLUSTER}.w1es0.mongodb.net/${process.env.DB_NAME}`;
+    mongoose.connect(dbConnectionPath);
+    mongoose.connection.on('error', () => {
+      winstonLogger.error('Could not connect to database.');
+    });
     mongoose.connection.once('open', () => {
-      console.log(`Connection established with the database ${process.env.DB_NAME}.`);
+      winstonLogger.info(`Connection established with the database ${process.env.DB_NAME}.`);
     });
     return mongoose.connection;
   }

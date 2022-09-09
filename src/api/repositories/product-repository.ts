@@ -1,7 +1,7 @@
 import { IProduct, IProductQuery, IProductResponse } from '../models/interfaces/product-interface';
 import ProductSchema from '../models/schemas/product-schema';
 import { ObjectId, PaginateResult } from 'mongoose';
-import paginateCustomLabels from '../../utils/paginate-custom-labels';
+import PaginateCustomLabels from '../../utils/paginate-custom-labels';
 import productRules from '../../utils/product-rules';
 import { IPaginate } from '../models/interfaces/paginate-interface';
 
@@ -10,7 +10,7 @@ class ProductRepository {
     const options = {
       page: query.page || 1,
       limit: query.limit || 50,
-      customLabels: paginateCustomLabels
+      customLabels: new PaginateCustomLabels('products')
     };
     const resultsPaginate = await ProductSchema.paginate(
       {
@@ -26,7 +26,7 @@ class ProductRepository {
       page: query.page || 1,
       limit: query.limit || 50,
       sort: { qtd_stock: 1 },
-      customLabels: paginateCustomLabels
+      customLabels: new PaginateCustomLabels('products')
     };
     const resultsPaginate = await ProductSchema.paginate(
       {
