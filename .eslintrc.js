@@ -14,7 +14,7 @@ module.exports = {
   plugins: [
     '@typescript-eslint'
   ],
-  ignorePatterns: ['__tests__/**'],
+  ignorePatterns: ['__tests__/**', 'dist/**'],
   rules: {
     indent: ['error', 2],
     quotes: ['error', 'single'],

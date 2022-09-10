@@ -4,8 +4,10 @@
   "description": "Final Challenge - API REST FULL",
   "main": "src/app.ts",
   "scripts": {
-    "predev": "eslint . --ext .ts --fix",
+    "build": "tsc",
     "dev": "nodemon src/server.ts --ignore __tests__",
+    "predev": "eslint . --ext .ts --fix",
+    "start": "node dist/server.js",
     "test": "jest --forceExit"
   },
   "repository": {
