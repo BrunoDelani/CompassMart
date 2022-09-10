@@ -47,4 +47,4 @@ Cloud MongoDB => User and database public
 Run application and access: http://localhost:3000/api/v1/api-docs
 
 # Deployed to heroku
-https://compassmart.herokuapp.com/{routes api}
+https://compassmart.herokuapp.com/ {routes api}
