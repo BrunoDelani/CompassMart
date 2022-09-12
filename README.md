@@ -44,7 +44,8 @@ Develop the Back-end for a customer who wants to create a system called CompassM
 Cloud MongoDB => User and database public
 
 # Documentation API
-Run application and access: http://localhost:3000/api/v1/api-docs
+* http://localhost:3000/api/v1/api-docs - Local
+* https://compassmart.herokuapp.com/api/v1/api-docs/ - Deployed
 
 # Deployed to heroku
 https://compassmart.herokuapp.com/ {routes api}
