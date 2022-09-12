@@ -215,7 +215,7 @@
         "name" : "id",
         "in" : "path",
         "schema" : {
-          "type" : "integer"
+          "type" : "string"
         },
         "required" : true
       } ],
@@ -460,6 +460,42 @@
           },
           "400" : {
             "description" : "This bar_codes is already in use."
+          },
+          "500" : {
+            "description" : "Error page."
+          }
+        },
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ]
+      }
+    },
+    "/api/v1/product/marketplace/{id}" : {
+      "parameters" : [ {
+        "name" : "id",
+        "in" : "path",
+        "schema" : {
+          "type" : "string"
+        },
+        "required" : true
+      } ],
+      "get" : {
+        "summary" : "Mapper product by ID",
+        "description" : "Search product by ID in system and mapper.",
+        "tags" : [ "Products" ],
+        "responses" : {
+          "200" : {
+            "description" : "product found and mapped.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Product not found."
           },
           "500" : {
             "description" : "Error page."
