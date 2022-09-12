@@ -1,7 +1,11 @@
 {
     "openapi": "3.0.0",
     "servers": [{
-            "url": "http://localhost:3000/"
+            "url": "http://localhost:3000/",
+            "description": "Development"
+        }, {
+            "url": "https://compassmart.herokuapp.com",
+            "description": "Deployed"
         }],
     "info": {
         "title": "Compass Mart",
@@ -211,7 +215,7 @@
                     "name": "id",
                     "in": "path",
                     "schema": {
-                        "type": "string"
+                        "type": "integer"
                     },
                     "required": true
                 }],
@@ -524,7 +528,7 @@
                                 "properties": {
                                     "email": {
                                         "type": "string",
-                                        "example": "bruno.cirino.pb@compasso.com.br"
+                                        "example": "br.delani@gmail.com"
                                     },
                                     "password": {
                                         "type": "string",
@@ -560,7 +564,7 @@
                     "name": "id",
                     "in": "path",
                     "schema": {
-                        "type": "string"
+                        "type": "integer"
                     },
                     "required": true
                 }],
@@ -594,7 +598,7 @@
                                 "properties": {
                                     "email": {
                                         "type": "string",
-                                        "example": "bruno.cirino.pb@compasso.com.br"
+                                        "example": "br.delani@gmail.com"
                                     },
                                     "password": {
                                         "type": "string",
@@ -615,7 +619,7 @@
                                     "properties": {
                                         "email": {
                                             "type": "string",
-                                            "example": "bruno.cirino.pb@compasso.com.br"
+                                            "example": "br.delani@gmail.com"
                                         },
                                         "token": {
                                             "type": "string",

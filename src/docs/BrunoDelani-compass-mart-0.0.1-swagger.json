@@ -585,7 +585,7 @@
         }
       }
     },
-    "/api/v1/user/authenticate" : {
+    "/api/v1/authenticate" : {
       "post" : {
         "summary" : "Login user in system",
         "description" : "Enter in system.",
