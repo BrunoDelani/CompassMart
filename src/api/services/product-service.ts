@@ -90,7 +90,7 @@ class ProductService {
           valueField = { [field]: insertValues(mMap, pMap, type, optional, newProductFromatter) };
           return valueField;
         } else {
-          valueField = { [mMap[index]]: this.formatterValue(result[pMap.toString()], type, optional) };
+          valueField = { [mMap[index]]: this.formatterValueToMapper(result[pMap.toString()], type, optional) };
           return valueField;
         }
       };
@@ -107,7 +107,7 @@ class ProductService {
     return newProductFromatter;
   }
 
-  formatterValue (value: any, type: string, optional: Array<any>): any {
+  formatterValueToMapper (value: any, type: string, optional: Array<any>): any {
     if (optional !== undefined) {
       if (optional[0] === 'currency') {
         const newValue = new Intl.NumberFormat(
