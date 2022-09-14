@@ -18,10 +18,11 @@ Develop the Back-end for a customer who wants to create a system called CompassM
  1. Clone repository.
  2. Install dependencies: `npm install`.
  3. Create .env through .env.example.
- 4. Run code in terminal: `npm run dev` => Run development application
- 5. Run code in terminal: `npm run test` => Run tests
- 5. Run code in terminal: `npm run build` => Build application
- 5. Run code in terminal: `npm run start` => Run application
+ 4. Run this code in the terminal in the cloned project folder: 
+   - `npm run dev` => Run development application
+   - `npm run test` => Run tests
+   - `npm run build` => Build application
+   - `npm run start` => Run application
 
  # Main dependencies
 - Bcrypt
