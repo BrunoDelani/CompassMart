@@ -1,10 +1,9 @@
 "use strict";
-exports.__esModule = true;
-var UserIncorrectPassword = /** @class */ (function () {
-    function UserIncorrectPassword() {
+Object.defineProperty(exports, "__esModule", { value: true });
+class UserIncorrectPassword {
+    constructor() {
         this.message = 'Incorrect password.';
         this.statusCode = 401;
     }
-    return UserIncorrectPassword;
-}());
-exports["default"] = UserIncorrectPassword;
+}
+exports.default = UserIncorrectPassword;

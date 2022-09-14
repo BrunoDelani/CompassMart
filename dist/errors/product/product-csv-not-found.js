@@ -1,10 +1,9 @@
 "use strict";
-exports.__esModule = true;
-var FileCSVNotFound = /** @class */ (function () {
-    function FileCSVNotFound() {
+Object.defineProperty(exports, "__esModule", { value: true });
+class FileCSVNotFound {
+    constructor() {
         this.message = 'File .csv not found.';
         this.statusCode = 404;
     }
-    return FileCSVNotFound;
-}());
-exports["default"] = FileCSVNotFound;
+}
+exports.default = FileCSVNotFound;

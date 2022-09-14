@@ -1,10 +1,9 @@
 "use strict";
-exports.__esModule = true;
-var ProductIdInvalid = /** @class */ (function () {
-    function ProductIdInvalid() {
+Object.defineProperty(exports, "__esModule", { value: true });
+class ProductIdInvalid {
+    constructor() {
         this.message = 'Product Id is invalid.';
         this.statusCode = 400;
     }
-    return ProductIdInvalid;
-}());
-exports["default"] = ProductIdInvalid;
+}
+exports.default = ProductIdInvalid;
