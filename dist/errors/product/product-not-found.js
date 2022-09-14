@@ -1,10 +1,9 @@
 "use strict";
-exports.__esModule = true;
-var ProductNotFound = /** @class */ (function () {
-    function ProductNotFound() {
+Object.defineProperty(exports, "__esModule", { value: true });
+class ProductNotFound {
+    constructor() {
         this.message = 'Product not found.';
         this.statusCode = 404;
     }
-    return ProductNotFound;
-}());
-exports["default"] = ProductNotFound;
+}
+exports.default = ProductNotFound;

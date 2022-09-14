@@ -1,10 +1,9 @@
 "use strict";
-exports.__esModule = true;
-var TokenMalformatted = /** @class */ (function () {
-    function TokenMalformatted() {
+Object.defineProperty(exports, "__esModule", { value: true });
+class TokenMalformatted {
+    constructor() {
         this.message = 'Token malformatted.';
         this.statusCode = 401;
     }
-    return TokenMalformatted;
-}());
-exports["default"] = new TokenMalformatted();
+}
+exports.default = new TokenMalformatted();

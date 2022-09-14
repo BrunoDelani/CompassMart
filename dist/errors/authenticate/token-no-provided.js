@@ -1,10 +1,9 @@
 "use strict";
-exports.__esModule = true;
-var NoToken = /** @class */ (function () {
-    function NoToken() {
+Object.defineProperty(exports, "__esModule", { value: true });
+class NoToken {
+    constructor() {
         this.message = 'No token provided.';
         this.statusCode = 401;
     }
-    return NoToken;
-}());
-exports["default"] = new NoToken();
+}
+exports.default = new NoToken();

@@ -1,7 +1,7 @@
 "use strict";
-exports.__esModule = true;
-var PaginateCustomLabels = /** @class */ (function () {
-    function PaginateCustomLabels(nameLabel) {
+Object.defineProperty(exports, "__esModule", { value: true });
+class PaginateCustomLabels {
+    constructor(nameLabel) {
         this.docs = nameLabel;
         this.totalDocs = 'total';
         this.limit = 'limit';
@@ -13,6 +13,5 @@ var PaginateCustomLabels = /** @class */ (function () {
         this.prevPage = false;
         this.nextPage = false;
     }
-    return PaginateCustomLabels;
-}());
-exports["default"] = PaginateCustomLabels;
+}
+exports.default = PaginateCustomLabels;

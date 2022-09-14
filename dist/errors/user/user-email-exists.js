@@ -1,10 +1,9 @@
 "use strict";
-exports.__esModule = true;
-var UserEmailExists = /** @class */ (function () {
-    function UserEmailExists() {
+Object.defineProperty(exports, "__esModule", { value: true });
+class UserEmailExists {
+    constructor() {
         this.message = 'This email is already in use.';
         this.statusCode = 400;
     }
-    return UserEmailExists;
-}());
-exports["default"] = UserEmailExists;
+}
+exports.default = UserEmailExists;

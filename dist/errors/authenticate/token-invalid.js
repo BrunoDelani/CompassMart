@@ -1,10 +1,9 @@
 "use strict";
-exports.__esModule = true;
-var InvalidToken = /** @class */ (function () {
-    function InvalidToken() {
+Object.defineProperty(exports, "__esModule", { value: true });
+class InvalidToken {
+    constructor() {
         this.message = 'Invalid token.';
         this.statusCode = 401;
     }
-    return InvalidToken;
-}());
-exports["default"] = new InvalidToken();
+}
+exports.default = new InvalidToken();

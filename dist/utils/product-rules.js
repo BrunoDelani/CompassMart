@@ -1,7 +1,7 @@
 "use strict";
-exports.__esModule = true;
-var ProductRules = /** @class */ (function () {
-    function ProductRules() {
+Object.defineProperty(exports, "__esModule", { value: true });
+class ProductRules {
+    constructor() {
         this.minPrice = 0.01;
         this.maxPrice = 1000;
         this.minStock = 0;
@@ -10,6 +10,5 @@ var ProductRules = /** @class */ (function () {
         this.barCodesLength = 13;
         this.lowStock = 100;
     }
-    return ProductRules;
-}());
-exports["default"] = new ProductRules();
+}
+exports.default = new ProductRules();
