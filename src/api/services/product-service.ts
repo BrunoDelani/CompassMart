@@ -39,13 +39,7 @@ class ProductService {
   }
 
   async createProductsByCSV (csv: String): Promise<IResultInsertProducts> {
-    const objectList = csv
-      .split('\n')
-      .map((row) =>
-        row.replace(/("[^"]*")/g, (x) => {
-          return x.replace(/,/g, '.');
-        }).replace(/"/gi, '').replace(/\r/gi, '').split(',')
-      );
+    const objectList = this.formatterCSV(csv);
     objectList.shift();
     return await this.insertListProductsCSV(objectList);
   }
@@ -154,6 +148,15 @@ class ProductService {
       }
     }
     return undefined;
+  }
+
+  formatterCSV (csv: String): String[][] {
+    return csv.split('\n')
+      .map((row) =>
+        row.replace(/("[^"]*")/g, (x) => {
+          return x.replace(/,/g, '.');
+        }).replace(/"/gi, '').replace(/\r/gi, '').split(',')
+      );
   }
 
   async insertListProductsCSV (csvFormated: String[][]): Promise<IResultInsertProducts> {
