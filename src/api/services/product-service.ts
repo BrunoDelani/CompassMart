@@ -202,7 +202,10 @@ class ProductService {
           });
       }
     };
-    await productRepository.insertMany(insertProducts);
+    const insertTimes = Math.ceil(insertProducts.length / 100);
+    for (let index = 0; index <= insertTimes; index++) {
+      await productRepository.insertMany(insertProducts.slice(index * 100, (index + 1) * 100));
+    }
     return listResult;
   }
 
