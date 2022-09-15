@@ -181,7 +181,14 @@ class ProductService {
       };
 
       const verify: IVerifyProduct = await this.verifyProductToCreate(newProduct);
-
+      for (const product of insertProducts) {
+        if (product.bar_codes === newProduct.bar_codes) {
+          verify.verify = false;
+          verify.messages === undefined
+            ? verify.messages = ['bar_codes duplicate']
+            : verify.messages.push('bar_codes duplicate');
+        }
+      }
       if (verify.verify === true) {
         insertProducts.push(newProduct);
         listResult.success = Number(listResult.success) + 1;
@@ -275,9 +282,7 @@ class ProductService {
       verificador.messages === undefined
         ? verificador.messages = ['bar_codes is not a number.']
         : verificador.messages.push('bar_codes is not a number.');
-    }
-
-    if (await productRepository.findByBarCode(newProduct.bar_codes)) {
+    } else if (await productRepository.findByBarCode(newProduct.bar_codes)) {
       verificador.verify = false;
       verificador.messages === undefined
         ? verificador.messages = ['bar_codes duplicate']
